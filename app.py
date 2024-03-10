@@ -2,7 +2,7 @@ from flask import Flask, request, render_template, redirect, flash, session, jso
 import requests
 import dotenv
 import os 
-from models import db, connect_db, User, Template, ProductCategory, Product, TemplateProduct, Reminder, GroceryList, GroceryListProducts
+from models import db, connect_db, User, ListTemplate, ProductCategory, Product, TemplateProduct, Reminder, GroceryList, GroceryListProducts
 from forms import RegisterForm, LoginForm
 from sqlalchemy.exc import IntegrityError
 

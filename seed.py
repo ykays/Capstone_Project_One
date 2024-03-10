@@ -1,4 +1,4 @@
-from models import User, db, Template, ProductCategory, Product, TemplateProduct, Reminder, GroceryList, GroceryListProducts
+from models import User, db, ListTemplate, ProductCategory, Product, TemplateProduct, Reminder, GroceryList, GroceryListProducts
 from app import app
 from csv import DictReader
 
@@ -21,9 +21,9 @@ with app.app_context():
     db.session.commit()
 
     # Add List Templates
-    temp1 = Template(template_name ="anna_template", user_id = 1)
-    temp2 = Template(template_name ="mike_template", user_id = 2)
-    temp3 = Template(template_name ="kevin_template", user_id = 3)
+    temp1 = ListTemplate(template_name ="anna_template", user_id = 1)
+    temp2 = ListTemplate(template_name ="mike_template", user_id = 2)
+    temp3 = ListTemplate(template_name ="kevin_template", user_id = 3)
 
     db.session.add_all([temp1, temp2, temp3])
     # Commit changes

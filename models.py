@@ -21,7 +21,7 @@ class User(db.Model):
     email = db.Column(db.Text, nullable=False, unique=True)
     location = db.Column(db.Text)
 
-    templates = db.relationship('Template', cascade="all, delete-orphan")
+    templates = db.relationship('ListTemplate', cascade="all, delete-orphan")
     reminders = db.relationship('Reminder', cascade="all, delete-orphan")
     grocery_lists = db.relationship('GroceryList', cascade="all, delete-orphan")
 
@@ -42,13 +42,13 @@ class User(db.Model):
         else:
             return False
     
-class Template(db.Model):
+class ListTemplate(db.Model):
     """Grocery Template Model"""
 
     __tablename__ = 'templates'
 
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    template_name = db.Column(db.Text, nullable=False, unique=True)
+    template_name = db.Column(db.Text, nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id', ondelete='CASCADE'), nullable=False)
 
     template_products = db.relationship('TemplateProduct', cascade="all, delete-orphan")
