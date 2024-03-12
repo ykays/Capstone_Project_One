@@ -99,3 +99,52 @@ h1 {
     padding: 8px;
 }
 
+#template-products > li > button {
+    float: right;
+ 
+}
+
+h2{
+    text-align: center;
+}
+
+#view-template{
+    text-align: center;
+}
+
+#search_product {
+    width: 400px;
+}
+
+#suggestions{
+    padding-right: 32px;
+    text-align: center;
+    background-color: azure;
+    outline-color: grey;
+}
+
+#suggestions > li:hover {
+    background-color: grey;
+    color: white;
+    cursor: grab;
+  }
+
+  #view-template{
+    border: 1px black solid;
+  }
+
+  .loader {
+    border: 16px solid #f3f3f3; /* Light grey */
+    border-top: 16px solid #3498db; /* Blue */
+    border-radius: 50%;
+    width: 100px;
+    height: 100px;
+    margin-left: auto;
+  margin-right: auto;
+    animation: spin 2s linear infinite;
+  }
+  
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }

@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, FloatField
+from wtforms import StringField, PasswordField, FloatField, SelectField
 from wtforms.validators import InputRequired
 
 class RegisterForm(FlaskForm):
@@ -16,12 +16,6 @@ class LoginForm(FlaskForm):
     username = StringField('Username', validators=[InputRequired()])
     password = PasswordField('Password', validators=[InputRequired()])
 
-class NewTemplateForm(FlaskForm):
-    """A form to add a new Grocery Template"""
 
-    template_name = StringField('Template Name', validators=[InputRequired()])
-
-class EditTemplateForm(FlaskForm):
-    """A form to add/update products into a template""" 
 
     

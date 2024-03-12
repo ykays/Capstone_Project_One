@@ -54,6 +54,12 @@ class ListTemplate(db.Model):
     template_products = db.relationship('TemplateProduct', cascade="all, delete-orphan")
     grocery_lists = db.relationship('GroceryList') 
 
+    def serialize(self):
+            return {
+        'id': self.id,
+        'template_name': self.template_name,
+        'user_id': self.user_id
+    } 
 class ProductCategory(db.Model):
     """Product Category Model"""
 
@@ -79,6 +85,13 @@ class Product(db.Model):
     template_products = db.relationship('TemplateProduct', cascade="all, delete-orphan")
     grocery_list_products = db.relationship('GroceryListProducts',cascade="all, delete-orphan")
     
+    def serialize(self):
+            return {
+        'id': self.id,
+        'product_name': self.product_name,
+        'category_id': self.category_id
+    } 
+
 class TemplateProduct(db.Model):
     """Template-Product relationship Model"""
 
