@@ -9,9 +9,9 @@ with app.app_context():
 
 
     # Add new users
-    anna = User.signup(username = "anna" , password="anna123" , email="anna123@gmail.com" , location="Boston, MA" )
-    mike = User.signup(username = "mike" , password="mike123" , email="mike123@gmail.com" , location="NYC, NY" )
-    kevin = User.signup(username = "kevin" , password="kevin123" , email="kevin123@gmail.com" , location="Los Angeles, CA" )
+    anna = User.signup(username = "anna" , password="anna123" , email="anna123@gmail.com"  )
+    mike = User.signup(username = "mike" , password="mike123" , email="mike123@gmail.com" )
+    kevin = User.signup(username = "kevin" , password="kevin123" , email="kevin123@gmail.com" )
     # Add new objects to the session
     db.session.add(anna)
     db.session.add(mike)

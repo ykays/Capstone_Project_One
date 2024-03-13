@@ -99,7 +99,8 @@ h1 {
     padding: 8px;
 }
 
-#template-products > li > button {
+#template-products > li > button,
+#reminder-products > li > button {
     float: right;
  
 }
@@ -112,18 +113,19 @@ h2{
     text-align: center;
 }
 
-#search_product {
+#search_product, #quantity_reminder {
     width: 400px;
+    
 }
 
-#suggestions{
-    padding-right: 32px;
+#suggestions, #suggestions-ext{
+    padding-right: 40px;
     text-align: center;
-    background-color: azure;
-    outline-color: grey;
+    
+    outline-color: rgb(183, 179, 179);
 }
 
-#suggestions > li:hover {
+#suggestions > li:hover, #suggestions-ext > li:hover {
     background-color: grey;
     color: white;
     cursor: grab;
@@ -131,6 +133,10 @@ h2{
 
   #view-template{
     border: 1px black solid;
+  }
+
+  input#quantity_reminder_edit {
+    width: 60px;
   }
 
   .loader {
@@ -148,3 +154,5 @@ h2{
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
   }
+
+ 

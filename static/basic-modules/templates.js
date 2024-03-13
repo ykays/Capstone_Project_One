@@ -1,3 +1,14 @@
+import {
+  addSpinner,
+  hideSpinner,
+  searchHandler,
+  search,
+  showSuggestions,
+  createLiSuggestion,
+  clearSuggestions,
+  useSuggestion,
+} from "./modules/products_suggestions.js";
+
 // Getting DOM elements for templates page
 const createNewTemplate = document.getElementById("create-template");
 const viewTemplate = document.getElementById("view-template");
@@ -13,25 +24,17 @@ const searchProduct = document.getElementById("search_product");
 const suggestions = document.getElementById("suggestions");
 const btnAddProduct = document.getElementById("btn-add-product");
 const spinner = document.getElementById("spinner");
+const btnAddModel = document.getElementById("add-modal");
+
 // Function to hide all page elements until we know if the user has any templates
 function hidePageComponents() {
   const components = [createNewTemplate, viewTemplate, editTemplate];
   components.forEach((c) => (c.style.display = "none"));
 }
 
-// Adding spinner to wait for the data to load
-function addSpinner() {
-  spinner.classList.add("loader");
-}
-
-//Removing spinner
-function hideSpinner() {
-  spinner.classList.remove("loader");
-}
-
 // Getting user's templates
 async function getUsersTemplates() {
-  resp = await axios.get("/api/templates");
+  const resp = await axios.get("/api/templates");
   if (resp.data.length === 0) {
     hideSpinner();
     createNewTemplate.style.display = "block";
@@ -48,7 +51,7 @@ async function getUsersTemplates() {
 async function createTemplate(e) {
   const name = document.getElementById("template_name").value;
   addSpinner();
-  resp = await axios.post("/api/templates", {
+  const resp = await axios.post("/api/templates", {
     name: name,
   });
   hideSpinner();
@@ -74,7 +77,7 @@ function viewMyTemplate(templateId, templateName, userId) {
 async function deleteMyTemplate(e) {
   addSpinner();
   const templateId = e.target.dataset.templateId;
-  resp = await axios.delete(`/api/templates/${templateId}`);
+  const resp = await axios.delete(`/api/templates/${templateId}`);
   hideSpinner();
   hidePageComponents();
   getUsersTemplates();
@@ -85,7 +88,7 @@ async function loadMyTemplate(id) {
   hidePageComponents();
   editTemplate.style.display = "block";
   addSpinner();
-  resp = await axios.get(`/api/templates/${id}`);
+  const resp = await axios.get(`/api/templates/${id}`);
   const products = resp.data["data"];
   hideSpinner();
   removeProductsFromPage();
@@ -114,6 +117,7 @@ function addProductsToPage(products) {
 
     let delButton = document.createElement("button");
     delButton.innerText = "X";
+    delButton.id = "btnDelItem";
     delButton.classList.add("btn");
     delButton.classList.add("btn-danger");
     delButton.classList.add("btn-sm");
@@ -128,85 +132,15 @@ async function deleteTemplateProduct(e) {
   const item = e.target.parentElement;
   const itemId = item.dataset.productId;
   addSpinner();
-  resp = await axios.delete(`/api/templates/product/${itemId}`);
+  const resp = await axios.delete(`/api/templates/product/${itemId}`);
   hideSpinner();
   loadMyTemplate(resp.data["template"]);
-}
-
-function searchHandler(e) {
-  const query = e.target.value;
-  search(query);
-}
-
-//Getting the list of all DB products and fetching the ones matching user's input
-async function search(str) {
-  clearSuggestions();
-  if (!str) return;
-
-  const wordLower = str.toLowerCase();
-  addSpinner();
-  resp = await axios.get("/api/products");
-
-  const products = [];
-  for (let product of resp.data) {
-    products.push(product);
-  }
-  hideSpinner();
-  const results = products.filter((product) => {
-    const productLower = product["product_name"].toLowerCase();
-    return productLower.includes(wordLower);
-  });
-
-  showSuggestions(results);
-}
-
-function clearSuggestions() {
-  const currentLi = suggestions.querySelectorAll("li");
-  currentLi.forEach((li) => li.remove());
-}
-//function to display all the results in the dropdow
-function showSuggestions(results) {
-  results
-    .map((result) =>
-      createLi(
-        result["product_name"],
-        result["id"],
-        result["category_id"],
-        result["category_name"]
-      )
-    )
-    .forEach((li) => suggestions.append(li));
-}
-
-//create new elements - li to display all of the suggestions
-function createLi(
-  productName,
-  productId,
-  productCategoryId,
-  productCategoryName
-) {
-  const newLi = document.createElement("li");
-  newLi.innerText = `${productName} - ${productCategoryName} `;
-  newLi.dataset.productId = productId;
-  newLi.dataset.categoryId = productCategoryId;
-  newLi.classList.add("dropdown-item");
-  return newLi;
-}
-
-//once the user selects one of the suggestion, the selected only will be populated in the bar
-function useSuggestion(e) {
-  e.preventDefault();
-  const selectedProductName = e.target.innerText;
-  searchProduct.value = selectedProductName;
-  searchProduct.dataset.productId = e.target.dataset.productId;
-
-  clearSuggestions();
 }
 
 //once the user hits Add button the selected suggestion will be added to the user's template
 async function addTemplateProduct(e) {
   const itemId = searchProduct.dataset.productId;
-  resp = await axios.post(`/api/templates/product/${itemId}`);
+  const resp = await axios.post(`/api/templates/product/${itemId}`);
 
   searchProduct.value = "";
   loadMyTemplate(resp.data["template"]);
@@ -234,7 +168,9 @@ btnEdit.addEventListener("click", function (e) {
 
 templateProducts.addEventListener("click", function (e) {
   e.preventDefault();
-  deleteTemplateProduct(e);
+  if (e.target.id === "btnDelItem") {
+    deleteTemplateProduct(e);
+  }
 });
 
 searchProduct.addEventListener("keyup", searchHandler);
@@ -243,4 +179,8 @@ suggestions.addEventListener("click", useSuggestion);
 btnAddProduct.addEventListener("click", function (e) {
   e.preventDefault();
   addTemplateProduct(e);
+});
+
+btnAddModel.addEventListener("shown.bs.modal", function (e) {
+  e.preventDefault();
 });

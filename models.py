@@ -19,18 +19,17 @@ class User(db.Model):
     username = db.Column(db.Text, nullable=False, unique=True)
     password = db.Column(db.Text, nullable=False)
     email = db.Column(db.Text, nullable=False, unique=True)
-    location = db.Column(db.Text)
 
     templates = db.relationship('ListTemplate', cascade="all, delete-orphan")
     reminders = db.relationship('Reminder', cascade="all, delete-orphan")
     grocery_lists = db.relationship('GroceryList', cascade="all, delete-orphan")
 
     @classmethod
-    def signup(cls, username, password, email,location=None ):
+    def signup(cls, username, password, email):
         """Class method to Sign up user."""
 
         hashed_pwd = bcrypt.generate_password_hash(password).decode('UTF-8')
-        return cls(username=username, password=hashed_pwd, email=email, location=location)
+        return cls(username=username, password=hashed_pwd, email=email)
     
     @classmethod
     def authenticate(cls, username, password):
@@ -69,8 +68,13 @@ class ProductCategory(db.Model):
     category_name = db.Column(db.Text, nullable=False, unique=True)
     category_details = db.Column(db.Text, nullable=False)
 
-    products = db.relationship('Product') 
 
+    def serialize(self):
+            return {
+        'id': self.id,
+        'category_name': self.category_name,
+        'category_details': self.category_details
+    } 
 class Product(db.Model):
     """Product Model"""
 
@@ -78,13 +82,13 @@ class Product(db.Model):
 
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     product_name = db.Column(db.Text, nullable=False)
-    product_image = db.Column(db.Text)
     category_id = db.Column(db.Integer, db.ForeignKey('categories.id'))
 
     reminders = db.relationship('Reminder', cascade="all, delete-orphan")
     template_products = db.relationship('TemplateProduct', cascade="all, delete-orphan")
     grocery_list_products = db.relationship('GroceryListProducts',cascade="all, delete-orphan")
-    
+    category = db.relationship('ProductCategory')
+
     def serialize(self):
             return {
         'id': self.id,
@@ -109,8 +113,17 @@ class Reminder(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id', ondelete='CASCADE'), nullable=False)
     product_id = db.Column(db.Integer, db.ForeignKey('products.id', ondelete='CASCADE'), nullable=False)
-    quantity = db.Column(db.Integer, nullable=False)
+    quantity = db.Column(db.Integer, nullable=False, default=1)
 
+    
+    
+    def serialize(self):
+            return {
+        'id': self.id,
+        'user_id': self.user_id,
+        'product_id': self.product_id,
+        'quantity': self.quantity
+    } 
 class GroceryList(db.Model):
     """Grocery List Model"""
 
@@ -135,7 +148,7 @@ class GroceryListProducts(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     grocery_list_id = db.Column(db.Integer, db.ForeignKey('grocery_lists.id', ondelete='CASCADE'), nullable=False)
     product_id = db.Column(db.Integer, db.ForeignKey('products.id', ondelete='CASCADE'), nullable=False)
-    quantity = db.Column(db.Integer, nullable=False)
+    quantity = db.Column(db.Integer, nullable=False, default=1)
     bought = db.Column(db.Boolean, nullable=False, default=False)
 
    

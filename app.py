@@ -26,19 +26,6 @@ app.app_context().__enter__()
 
 @app.route('/')
 def home():
-  ####edamam
-  # params = {'app_id': app_id, 'app_key': app_key, 'ingr': 'tomato', 'nutrition-type': 'logging'}
-  # req1 = requests.get('https://api.edamam.com/api/food-database/v2/parser', params=params)
-
-  # ##autocomplete
-  # params = {'app_id': app_id, 'app_key': app_key, 'q': 'tomat', 'limit': '10'}
-  # req2 = requests.get('https://api.edamam.com/auto-complete', params=params)
-
-
-  
-  # resp1 = req1.json()
-  # resp2 = req2.json()
-
   return render_template('home.html')
 
 @app.route('/register', methods=['GET', 'POST'])
@@ -50,8 +37,7 @@ def register():
     username = form.username.data
     password = form.password.data
     email = form.email.data
-    location = form.location.data
-    new_user = User.signup(username, password, email, location)
+    new_user = User.signup(username, password, email)
     
     db.session.add(new_user)        
     try:
@@ -173,4 +159,85 @@ def get_all_products():
 
    return jsonify(prod_list)
 
+@app.route('/external_search')
+def externach_search_page():
+   """Page with external API search for a product"""
+   return render_template('external_search.html')
+
+@app.route('/search/external/<name>')
+def search_via_external_api(name):
+   params = {'app_id': app_id, 'app_key': app_key, 'ingr': name, 'nutrition-type': 'logging'}
+   request = requests.get('https://api.edamam.com/api/food-database/v2/parser', params=params)
+   response = request.json()
+   return jsonify(response)
+   
+@app.route('/categories')
+def get_all_product_categories():
+   """To get a list of all available product categories"""
+   categories = [category.serialize() for category in ProductCategory.query.all()]
+   return jsonify(categories)
+
+@app.route('/api/products', methods=['POST'])
+def adding_new_product():
+   """To add a new product"""
+   if  not session['username']:
+      flash("Access unauthorized.", "danger")
+      return jsonify(message='access unauthorized')
+   product_name = request.json['product']
+   category_id=request.json['category_id']
+   find_product =  Product.query.filter(Product.product_name == product_name, Product.category_id==category_id).all()
+   if len(find_product) != 0:
+      flash("This product & category already exists")
+      return (jsonify(message='already exists'))
+
+   new_product = Product(product_name=product_name, category_id=category_id)
+   db.session.add(new_product)
+   db.session.commit()
+   return (jsonify(product=new_product.serialize()), 201)
+
+
+######## Reminders routes ######
+@app.route('/reminders')
+def show_reminders_page():
+   """To show all don't forget items where the user can add/edit/delete them"""
+   return render_template('reminders.html')
+
+@app.route('/api/reminders/products', methods=['POST'])
+def add_reminder_product():
+   """To add a product to user's don't forget list"""
+   if  not session['username']:
+      flash("Access unauthorized.", "danger")
+      return jsonify(message='access unauthorized')
+   
+   user = User.query.filter(User.username == session['username']).first()
+   new_reminder = Reminder(user_id=user.id, product_id=request.json['product_id'], quantity=request.json.get('quantity'))
+   db.session.add(new_reminder)
+   db.session.commit()
+   return (jsonify(reminder=new_reminder.serialize()), 201)
+
+@app.route('/api/reminders/products')
+def get_reminders_for_user():
+   """To retrieve user's don't forget items"""
+   user = User.query.filter(User.username == session['username']).first()
+   reminders = []
+   all_reminders = db.session.query(Product.id, Product.product_name, ProductCategory.category_name, Reminder.id, Reminder.user_id, Reminder.product_id, Reminder.quantity).join(Reminder).join(ProductCategory).filter(Reminder.user_id == user.id).all()
+   for reminder in all_reminders:
+      reminders.append(reminder._asdict())
+   return jsonify({"data":reminders})
+
+@app.route('/api/reminders/products/<int:id>', methods=['DELETE'])
+def delete_product_from_reminder_list(id):
+   """To delete product from user's don't forget list"""
+   reminder = Reminder.query.get_or_404(id)
+   db.session.delete(reminder)
+   db.session.commit()
+   return jsonify(message='deleted')
+
+@app.route('/api/remiders/products', methods=["PATCH"])
+def update_quantity():
+   """To update quantity of item from don't forget list"""
+   reminder = Reminder.query.get_or_404(request.json['id'])
+   reminder.quantity = request.json['quantity']
+   db.session.commit()
+   return (jsonify(reminder=reminder.serialize()), 201)
 
