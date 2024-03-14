@@ -1,4 +1,4 @@
-from flask import Flask, request, render_template, redirect, flash, session, jsonify, url_for
+from flask import Flask, request, render_template, redirect, flash, session, jsonify, url_for, render_template_string
 import requests
 import dotenv
 import os 
@@ -6,6 +6,11 @@ from models import db, connect_db, User, ListTemplate, ProductCategory, Product,
 from forms import RegisterForm, LoginForm
 from sqlalchemy.exc import IntegrityError
 import functions
+import analytics
+import plotly.express as px
+from datetime import datetime, date, timedelta
+
+
 
 dotenv.load_dotenv()
 
@@ -22,7 +27,7 @@ app_id = os.environ['APPLICATION_ID']
 app_key = os.environ['APPLICATION_KEY']
 
 connect_db(app)
-#app.app_context().__enter__()
+app.app_context().__enter__()
 
 @app.route('/')
 def home():
@@ -332,3 +337,30 @@ def update_grocery_list():
    grocery_list.completed=True
    db.session.commit()
    return jsonify(message="The price has been updated") 
+
+##### Analytics ####
+@app.route('/analytics')
+def history_analytics_page():
+   """To display charts and history of grocery spending"""
+   user_id = functions.get_user_id(session['username'])
+   date = datetime.today() - timedelta(days=31);
+   fig = analytics.total_price_to_date(date, user_id)
+   render_template_string(fig.to_html())
+   x = fig.to_html()
+
+   fig2 = analytics.total_number_items_bought(user_id, date)
+   render_template_string(fig2.to_html())
+   x2 = fig2.to_html() 
+
+   fig3 = analytics.total_number_items_bought_vs_price_for_date(user_id, date)
+   render_template_string(fig3.to_html())
+   x3 = fig3.to_html()
+
+   fig4 = analytics.total_products_per_category(user_id, date)
+   render_template_string(fig4.to_html())
+   x4 = fig4.to_html()
+
+   fig5 = analytics.most_expensive_groceries(user_id)
+   render_template_string(fig5.to_html())
+   x5 = fig5.to_html()
+   return render_template('analytics.html',  x=x, x2=x2, x3=x3, x4=x4, x5=x5 )

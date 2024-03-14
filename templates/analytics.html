@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+    {% block title %} Analytics {% endblock %}
+    {% block content %}
+    <h1 class="text-center">Analytics</h1>
+
+    <h4>Total amount spent on grocery per date (past month)</h4>
+    <iframe srcdoc="{{x}}"></iframe>
+    <h4>Number of products bought per each grocery date (past month)</h4>
+    <iframe srcdoc="{{x2}}"></iframe>
+    <h4>Total amount spent on grocery vs number of items bought per date (past month)</h4>
+    <iframe srcdoc="{{x3}}"></iframe>
+    <h4>Number of items bought of each category per date (past month)</h4>
+    <iframe srcdoc="{{x4}}"></iframe>
+    <h4>10 most expensive groceries of all times</h4>
+    <iframe srcdoc="{{x5}}"></iframe>
+    {% endblock %}
