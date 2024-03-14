@@ -8,6 +8,8 @@ def get_user_id(username):
 def get_user_template_id(username):
     user = User.query.filter(User.username == username).first()
     template = ListTemplate.query.filter(ListTemplate.user_id == user.id).first()
+    if template == None:
+        return False
     return template.id
 
 def get_user_grocery_list_id(username, date):

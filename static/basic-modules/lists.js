@@ -62,13 +62,20 @@ async function getList(e) {
     const msg = "A new list has been created";
     showErrors(msg);
   }
-  const resultProducts = resp.data.list;
-  btnAddToList.style.display = "block";
-  btnAddReminders.style.display = "block";
-  priceSection.style.display = "block";
-  addProductsToPage(resultProducts);
-  priceInput.value = resp.data.list[0].total_price;
+
+  if (resp.status === 200 && resp.data["message"] == "Template needed") {
+    const msg = "Please add a template first";
+    showErrors(msg);
+  } else {
+    const resultProducts = resp.data.list;
+    btnAddToList.style.display = "block";
+    btnAddReminders.style.display = "block";
+    priceSection.style.display = "block";
+    addProductsToPage(resultProducts);
+    priceInput.value = resp.data.list[0].total_price;
+  }
 }
+
 async function newListProduct(e) {
   const product_id = searchProduct.dataset.productId;
   const quantity = quantityAdd.value;

@@ -133,10 +133,8 @@ class GroceryList(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('users.id', ondelete='CASCADE'), nullable=False)
     date = db.Column(db.Date, nullable=False)
     template_id = db.Column(db.Integer, db.ForeignKey('templates.id'))
-    completed = db.Column(db.Boolean, nullable=False, default=False)
     total_price = db.Column(db.Float)
-    start_time = db.Column(db.DateTime)
-    end_time = db.Column(db.DateTime)
+
  
     grocery_list_products = db.relationship('GroceryListProducts', cascade="all, delete-orphan")
     

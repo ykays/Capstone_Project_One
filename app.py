@@ -282,10 +282,13 @@ def get_list_products(date):
       list_id = functions.get_user_grocery_list_id(session['username'], date)
       list_products = functions.get_all_products_list(list_id, date)
       return jsonify(list=list_products)
-  
-   else:
-        new_list = functions.add_new_grocery_list(session["username"], date)
-        return (jsonify(list=new_list), 201)
+   
+   check_template_exists = functions.get_user_template_id(session["username"])
+   if not check_template_exists:
+      return jsonify(message='Template needed')
+
+   new_list = functions.add_new_grocery_list(session["username"], date)
+   return (jsonify(list=new_list), 201)
       
 
 @app.route('/api/list/products', methods=['POST'])
