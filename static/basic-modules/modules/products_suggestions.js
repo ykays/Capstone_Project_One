@@ -1,5 +1,6 @@
 const suggestions = document.getElementById("suggestions");
 const searchProduct = document.getElementById("search_product");
+const listProducts = document.getElementById("list-products");
 
 // Adding spinner to wait for the data to load
 function addSpinner() {
@@ -81,6 +82,61 @@ function useSuggestion(e) {
   clearSuggestions();
 }
 
+function addProductsToPage(products) {
+  products.forEach((product) => {
+    let li = document.createElement("li");
+    li.innerText = `${product["product_name"]}, Quantity: `;
+    li.classList.add("list-group-item");
+    li.classList.add("text-bg-secondary");
+    li.dataset.reminderId = product["id"];
+    li.dataset.bought = product["bought"];
+
+    let spanQty = document.createElement("input");
+    spanQty.type = "number";
+    spanQty.value = product["quantity"];
+    spanQty.name = "quantity_reminder_edit";
+    spanQty.id = "quantity_reminder_edit";
+    li.append(spanQty);
+
+    let span = document.createElement("span");
+    span.innerText = product["category_name"];
+    span.classList.add("badge");
+    span.classList.add("text-bg-light");
+    li.append(span);
+
+    let btnCheck = document.createElement("button");
+    btnCheck.classList.add("check-btn");
+    btnCheck.id = "btnCheckItem";
+    product["bought"] === true
+      ? (btnCheck.innerText = "✔")
+      : (btnCheck.innerText = "□");
+    li.append(btnCheck);
+
+    let delButton = document.createElement("button");
+    delButton.innerText = "Delete";
+    delButton.id = "btnDelItem";
+    delButton.classList.add("btn");
+    delButton.classList.add("btn-danger");
+    delButton.classList.add("btn-sm");
+    li.append(delButton);
+
+    let editButton = document.createElement("button");
+    editButton.innerText = "Save";
+    editButton.id = "btnSaveItem";
+    editButton.classList.add("btn");
+    editButton.classList.add("btn-success");
+    editButton.classList.add("btn-sm");
+    li.append(editButton);
+
+    listProducts.append(li);
+  });
+}
+
+function removeProductsFromPage() {
+  const currentProducts = listProducts.querySelectorAll("li");
+  currentProducts.forEach((li) => li.remove());
+}
+
 export {
   addSpinner,
   hideSpinner,
@@ -90,4 +146,6 @@ export {
   createLiSuggestion,
   clearSuggestions,
   useSuggestion,
+  addProductsToPage,
+  removeProductsFromPage,
 };

@@ -139,7 +139,17 @@ class GroceryList(db.Model):
     end_time = db.Column(db.DateTime)
  
     grocery_list_products = db.relationship('GroceryListProducts', cascade="all, delete-orphan")
- 
+    
+    def serialize(self):
+            return {
+        'id': self.id,
+        'user_id': self.user_id,
+        'template_id': self.template_id,
+        'completed': self.completed,
+        'total_price': self.total_price,
+        'start_time' : self.start_time,
+        'end_time' : self.end_time
+    }
 class GroceryListProducts(db.Model):
     """Grocery List Products Relationship Model"""
 
@@ -151,5 +161,12 @@ class GroceryListProducts(db.Model):
     quantity = db.Column(db.Integer, nullable=False, default=1)
     bought = db.Column(db.Boolean, nullable=False, default=False)
 
-   
+    def serialize(self):
+            return {
+        'id': self.id,
+        'grocery_list_id': self.grocery_list_id,
+        'product_id': self.product_id,
+        'quantity': self.quantity,
+        'bought': self.bought,
+    }
 

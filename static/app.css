@@ -100,7 +100,8 @@ h1 {
 }
 
 #template-products > li > button,
-#reminder-products > li > button {
+#reminder-products > li > button,
+#list-products > li > button {
     float: right;
  
 }
@@ -139,6 +140,13 @@ h2{
     width: 60px;
   }
 
+ .date-form{
+    margin-bottom: 20px;
+ }
+
+ .check-btn {
+    margin-left: 40px;
+ }
   .loader {
     border: 16px solid #f3f3f3; /* Light grey */
     border-top: 16px solid #3498db; /* Blue */
