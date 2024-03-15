@@ -17,7 +17,27 @@ const reminderListProducts = document.getElementById("reminder-products");
 const suggestions = document.getElementById("suggestions");
 const btnSaveEdit = document.getElementById("save-edit");
 const editedQuantity = document.getElementById("quantity_reminder_edit");
+const messages = document.getElementById("messages");
 
+// Function to hide sections of the pages
+function hidePageComponents() {
+  const components = [messages];
+  components.forEach((c) => (c.style.display = "none"));
+}
+
+function showErrors(msg) {
+  messages.style.display = "block";
+  messages.innerText = msg;
+  timeOut();
+}
+function timeOut() {
+  setTimeout(() => {
+    messages.innerText = "";
+    messages.style.display = "none";
+  }, 4000);
+}
+
+//Adding new reminder to don't forget list
 async function newReminder(e) {
   const product_id = searchProduct.dataset.productId;
   const quantity = quantityReminder.value;
@@ -25,6 +45,10 @@ async function newReminder(e) {
     product_id: product_id,
     quantity: quantity,
   });
+  if (resp.status === 201) {
+    const msg = "Product has been added to your don't forget list";
+    showErrors(msg);
+  }
 
   searchProduct.value = "";
   quantityReminder.value = "";
@@ -94,6 +118,10 @@ async function deleteReminderProduct(e) {
 
   addSpinner();
   const resp = await axios.delete(`/api/reminders/products/${itemId}`);
+  if (resp.status === 200) {
+    const msg = "Product has been deleted from your list";
+    showErrors(msg);
+  }
   hideSpinner();
   loadMyReminders();
 }
@@ -106,11 +134,16 @@ async function saveEditReminder(e) {
     id: id,
     quantity: quantity,
   });
+  if (resp.status === 201) {
+    const msg = "Product has been updated";
+    showErrors(msg);
+  }
 
   loadMyReminders();
 }
 
 //As starting point - loading all user's reminders
+hidePageComponents();
 loadMyReminders();
 
 searchProduct.addEventListener("keyup", searchHandler);

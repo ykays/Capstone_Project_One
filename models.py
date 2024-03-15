@@ -75,6 +75,9 @@ class ProductCategory(db.Model):
         'category_name': self.category_name,
         'category_details': self.category_details
     } 
+
+    product = db.relationship('Product')
+
 class Product(db.Model):
     """Product Model"""
 
@@ -87,7 +90,7 @@ class Product(db.Model):
     reminders = db.relationship('Reminder', cascade="all, delete-orphan")
     template_products = db.relationship('TemplateProduct', cascade="all, delete-orphan")
     grocery_list_products = db.relationship('GroceryListProducts',cascade="all, delete-orphan")
-    category = db.relationship('ProductCategory')
+    
 
     def serialize(self):
             return {

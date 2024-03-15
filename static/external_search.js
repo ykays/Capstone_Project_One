@@ -4,14 +4,34 @@ const btnSearchExt = document.getElementById("btn-add-product-ext");
 const suggestionsExt = document.getElementById("suggestions-ext");
 const productCategories = document.getElementById("ext_prod_cat");
 const btnAddProduct = document.getElementById("btn-add-product-to-products");
+const messages = document.getElementById("messages");
 
-//Gettting list of all product categories so they can be displayed as select option
+// Function to hide sections of the pages
+function hidePageComponents() {
+  const components = [messages];
+  components.forEach((c) => (c.style.display = "none"));
+}
+
+function showErrors(msg) {
+  messages.style.display = "block";
+  messages.innerText = msg;
+  timeOut();
+}
+function timeOut() {
+  setTimeout(() => {
+    messages.innerText = "";
+    messages.style.display = "none";
+  }, 4000);
+}
+
+//Gettting list of all product categories so they can be displayed as select options
 async function getCategories() {
-  resp = await axios.get("/categories");
+  resp = await axios.get("/api/categories");
   const results = resp.data;
   results.forEach((result) => createSelectOption(result));
 }
 
+//Creating option element for each of the categories
 function createSelectOption(result) {
   const option = document.createElement("option");
   option.innerText = `${result.id}: ${result.category_name} - ${result.category_details}`;
@@ -63,9 +83,22 @@ async function addToProductList(e) {
     category_id: category_id,
   });
   searchExt.value = "";
+  if (resp.status === 200 && resp.data["message"] == "access unauthorized") {
+    const msg = "Access unauthorized ";
+    showErrors(msg);
+  }
+  if (resp.status === 200 && resp.data["message"] == "already exists") {
+    const msg = "This product & category already exists ";
+    showErrors(msg);
+  }
+  if (resp.status === 201) {
+    const msg = "The product has been added to Database ";
+    showErrors(msg);
+  }
   return resp.data;
 }
 
+hidePageComponents();
 getCategories();
 
 btnSearchExt.addEventListener("click", function (e) {

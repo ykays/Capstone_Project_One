@@ -27,7 +27,9 @@ app_id = os.environ['APPLICATION_ID']
 app_key = os.environ['APPLICATION_KEY']
 
 connect_db(app)
-app.app_context().__enter__()
+#app.app_context().__enter__()
+
+##### REGISTER & LOGIN USER ROUTES #####
 
 @app.route('/')
 def home():
@@ -84,6 +86,9 @@ def logout_user():
     flash("You've logged out successfully", "success")
     return redirect('/')
 
+
+##### TEMPLATES ROUTES - View/Create/Edit/Delete Templates #####
+
 @app.route('/templates')
 def show_templates():
    """Main route to view/add/edit user's grocery template"""
@@ -95,15 +100,16 @@ def show_templates():
 @app.route('/api/templates')
 def get_template():
    """To get user's grocery template, if exists"""
-   user = User.query.filter(User.username == session['username']).first()
-   users_templates = [template.serialize() for template in ListTemplate.query.filter(ListTemplate.user_id == user.id).all()]
+   user_id = functions.get_user_id(session['username'])
+   users_templates = [template.serialize() for template in ListTemplate.query.filter(ListTemplate.user_id == user_id).all()]
    return jsonify(users_templates)
 
 @app.route('/api/templates', methods=['POST'])
 def create_template():
    """To create a new template"""
-   user = User.query.filter(User.username == session['username']).first()
-   new_template = ListTemplate(template_name=request.json['name'], user_id = user.id)
+   user_id = functions.get_user_id(session['username'])
+   template_name = request.json['name']
+   new_template = ListTemplate(template_name=template_name, user_id = user_id)
    db.session.add(new_template)
    db.session.commit()
    return (jsonify(template=new_template.serialize()), 201)
@@ -114,48 +120,47 @@ def delete_template(id):
    template = ListTemplate.query.get_or_404(id)
    db.session.delete(template)
    db.session.commit()
-   
    return jsonify(message= "deleted")
 
 @app.route('/api/templates/<int:id>')
 def get_template_details(id):
    """To get single template details"""
-   temp_products =  []
+   template_products =  []
    all_products = db.session.query(Product.id, Product.product_name, ProductCategory.category_name).join(TemplateProduct).join(ProductCategory).filter(TemplateProduct.template_id==id).all()
    for product in all_products:
-      temp_products.append(product._asdict())
-   return jsonify({"data":temp_products})
+      template_products.append(product._asdict())
+   return jsonify({"data":template_products})
 
 @app.route('/api/templates/product/<int:id>', methods=['DELETE'])
 def delete_template_product(id):
    """To delete single product from template list"""
-   user = User.query.filter(User.username == session['username']).first()
-   template = ListTemplate.query.filter(ListTemplate.user_id == user.id).first()
+   user_id = functions.get_user_id(session['username'])
+   template = ListTemplate.query.filter(ListTemplate.user_id == user_id).first()
    template_product = TemplateProduct.query.filter((TemplateProduct.product_id == id) & 
-                                                   (TemplateProduct.template_id == template.id) ).first()
+                                                   (TemplateProduct.template_id == template.id)).first()
+   
    db.session.delete(template_product)
    db.session.commit()
-   
    return jsonify(message= "deleted", template=template.id)
 
 @app.route('/api/templates/product/<int:id>', methods=['POST'])
 def add_template_product(id):
    """To add a product to a template"""
-   user = User.query.filter(User.username == session['username']).first()
-   template = ListTemplate.query.filter(ListTemplate.user_id == user.id).first()
+   user_id = functions.get_user_id(session['username'])
+   template = ListTemplate.query.filter(ListTemplate.user_id == user_id).first()
    product_exist_check = TemplateProduct.query.filter((TemplateProduct.template_id == template.id) 
                                                       & (TemplateProduct.product_id == id)).all()
    
-   if product_exist_check: 
-        return jsonify(message="already exists")
+   if len(product_exist_check) != 0: 
+        return jsonify(message="already exists", template=template.id)
    
    template_product = TemplateProduct(template_id=template.id, product_id=id)
    db.session.add(template_product)
    db.session.commit()
-   return jsonify(message="added", template=template.id)
+   return (jsonify(message="added", template=template.id),201)
    
 
-
+#### API Products route (used by all routes) ###
 @app.route('/api/products')
 def get_all_products():
    """To get the list of all products"""
@@ -183,7 +188,7 @@ def search_via_external_api(name):
    response = request.json()
    return jsonify(response)
    
-@app.route('/categories')
+@app.route('/api/categories')
 def get_all_product_categories():
    """To get a list of all available product categories"""
    categories = [category.serialize() for category in ProductCategory.query.all()]
@@ -193,14 +198,12 @@ def get_all_product_categories():
 def adding_new_product():
    """To add a new product"""
    if not session.get('username'):
-      flash("Access unauthorized.", "danger")
       return jsonify(message='access unauthorized')
    
    product_name = request.json['product']
    category_id=request.json['category_id']
    find_product =  Product.query.filter(Product.product_name == product_name, Product.category_id==category_id).all()
    if len(find_product) != 0:
-      flash("This product & category already exists")
       return (jsonify(message='already exists'))
 
    new_product = Product(product_name=product_name, category_id=category_id)
@@ -222,12 +225,12 @@ def show_reminders_page():
 @app.route('/api/reminders/products', methods=['POST'])
 def add_reminder_product():
    """To add a product to user's don't forget list"""
-   if  not session['username']:
+   if not session.get('username'):
       flash("Access unauthorized.", "danger")
       return jsonify(message='access unauthorized')
    
-   user = User.query.filter(User.username == session['username']).first()
-   new_reminder = Reminder(user_id=user.id, product_id=request.json['product_id'], quantity=request.json.get('quantity'))
+   user_id = functions.get_user_id(session['username'])
+   new_reminder = Reminder(user_id=user_id, product_id=request.json['product_id'], quantity=request.json.get('quantity'))
    db.session.add(new_reminder)
    db.session.commit()
    return (jsonify(reminder=new_reminder.serialize()), 201)

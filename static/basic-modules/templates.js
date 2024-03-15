@@ -28,8 +28,21 @@ const btnAddModel = document.getElementById("add-modal");
 
 // Function to hide all page elements until we know if the user has any templates
 function hidePageComponents() {
-  const components = [createNewTemplate, viewTemplate, editTemplate];
+  const components = [messages, createNewTemplate, viewTemplate, editTemplate];
   components.forEach((c) => (c.style.display = "none"));
+}
+
+//Functions to show/hide the messages to the user
+function showErrors(msg) {
+  messages.style.display = "block";
+  messages.innerText = msg;
+  timeOut();
+}
+function timeOut() {
+  setTimeout(() => {
+    messages.innerText = "";
+    messages.style.display = "none";
+  }, 4000);
 }
 
 // Getting user's templates
@@ -144,6 +157,12 @@ async function addTemplateProduct(e) {
 
   searchProduct.value = "";
   loadMyTemplate(resp.data["template"]);
+
+  //if the product is already in user's template don't add and send a message
+  if (resp.status === 200 && resp.data["message"] == "already exists") {
+    const msg = "This product already exists in your template";
+    showErrors(msg);
+  }
 }
 
 hidePageComponents();

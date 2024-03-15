@@ -80,7 +80,7 @@ class Template(TestCase):
     def test_reminder_model_invalid_qty(self):
         """The reminder model test with invalid quantity"""
         with self.assertRaises(Exception) as context:
-            reminder = Reminder(user_id=self.user_id, product_id=self.product_id, quantity=None)
+            reminder = Reminder(user_id=self.user_id, product_id=self.product_id, quantity='str')
             db.session.add(reminder)
             db.session.commit()
     

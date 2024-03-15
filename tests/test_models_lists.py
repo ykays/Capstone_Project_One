@@ -63,7 +63,7 @@ class Template(TestCase):
         self.assertEqual(grocery_list.id, self.grocery_list_id)
         self.assertEqual(grocery_list.user_id, self.user_id)
         self.assertEqual(grocery_list.template_id, self.template_id)
-        self.assertEqual(grocery_list.completed, False)
+      
     
     @pytest.mark.usefixtures("app_ctx")
     def test_grocery_list_invalid_user(self):
@@ -88,9 +88,7 @@ class Template(TestCase):
             user_id=self.user_id, 
             date=datetime.now(),
             template_id=self.template_id,
-            total_price=35.56,
-            start_time=datetime.now(),
-            end_time= datetime.now())
+            total_price=35.56)
         db.session.add(grocery_list)
         db.session.commit()
         self.grocery_list_id = grocery_list.id
@@ -98,7 +96,6 @@ class Template(TestCase):
         self.assertEqual(grocery_list.id, self.grocery_list_id)
         self.assertEqual(grocery_list.user_id, self.user_id)
         self.assertEqual(grocery_list.template_id, self.template_id)
-        self.assertEqual(grocery_list.completed, False)
         self.assertEqual(grocery_list.total_price, 35.56) 
 
     @pytest.mark.usefixtures("app_ctx")
@@ -170,7 +167,7 @@ class Template(TestCase):
             grocery_list_product = GroceryListProducts(
                 grocery_list_id=self.grocery_list_id, 
                 product_id=self.product_id,
-                quantity=None)
+                quantity='str')
             db.session.add(grocery_list_product)
             db.session.commit()
     

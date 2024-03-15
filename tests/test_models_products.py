@@ -82,7 +82,7 @@ class ProductModel(TestCase):
     
     @pytest.mark.usefixtures("app_ctx")
     def test_product_model_invalid_name(self):
-        """Product  model test with invalid nae"""
+        """Product  model test with invalid name"""
         category = ProductCategory(category_name='fruits', category_details='Apples, Bananas, etc')
         db.session.add(category)
         db.session.commit()
@@ -95,7 +95,7 @@ class ProductModel(TestCase):
     
     @pytest.mark.usefixtures("app_ctx")
     def test_product_category_relationship(self):
-        """Product  model test with invalid nae"""
+        """Test relationship between category and product"""
         category = ProductCategory(category_name='fruits', category_details='Apples, Bananas, etc')
         db.session.add(category)
         db.session.commit()

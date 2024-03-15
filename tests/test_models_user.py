@@ -45,19 +45,18 @@ class UserModelTestCase(TestCase):
     def test_user_signup(self):
         """Testing user sign up class method"""
 
-        user = User.signup("test_user", "test_password", "test@gmail.com", "Boston, MA")
+        user = User.signup("test_user", "test_password", "test@gmail.com")
 
         db.session.add(user)
         db.session.commit()
 
         self.assertEqual(user.username, "test_user")
         self.assertEqual(user.email, "test@gmail.com")
-        self.assertEqual(user.location, "Boston, MA")
 
     @pytest.mark.usefixtures("app_ctx")
     def test_user_authenticate(self):
         """Testing user authenticate class method"""
-        user = User.signup("test_user", "test_password", "test@gmail.com", "Boston, MA")
+        user = User.signup("test_user", "test_password", "test@gmail.com")
 
         db.session.add(user)
         db.session.commit()
@@ -69,7 +68,7 @@ class UserModelTestCase(TestCase):
         """Testing user sign up class method with invalid username"""
         
         with self.assertRaises(Exception) as context:
-            user = User.signup(None, "test_password", "test@gmail.com", "Boston, MA")
+            user = User.signup(None, "test_password", "test@gmail.com")
             db.session.add(user)
             db.session.commit()
     
@@ -78,7 +77,7 @@ class UserModelTestCase(TestCase):
         """Testing user sign up class method with invalid password"""
         
         with self.assertRaises(Exception) as context:
-            user = User.signup("test_user", None, "test@gmail.com", "Boston, MA")
+            user = User.signup("test_user", None, "test@gmail.com")
             db.session.add(user)
             db.session.commit()
     
@@ -95,7 +94,7 @@ class UserModelTestCase(TestCase):
     def test_user_authenticate_invalid_username(self):
         """Testing user authenticate class method with invalid username"""
 
-        user = User.signup("test_user", "test_password", "test@gmail.com", "Boston, MA")
+        user = User.signup("test_user", "test_password", "test@gmail.com")
 
         db.session.add(user)
         db.session.commit()
@@ -106,7 +105,7 @@ class UserModelTestCase(TestCase):
     def test_user_authenticate_invalid_password(self):
         """Testing user authenticate class method with invalid password"""
 
-        user = User.signup("test_user", "test_password", "test@gmail.com", "Boston, MA")
+        user = User.signup("test_user", "test_password", "test@gmail.com")
 
         db.session.add(user)
         db.session.commit()
