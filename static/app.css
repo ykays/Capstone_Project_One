@@ -1,0 +1,101 @@
+#logo {
+    width: 50px;
+    height: 50px;
+    
+}
+
+nav {
+    background-color: rgb(31, 41, 116);
+}
+
+body {
+    
+    background: linear-gradient(217deg, rgba(154, 165, 220, 0.8), rgba(255,0,0,0) 70.71%),
+    linear-gradient(127deg, rgba(73, 142, 216, 0.8), rgba(96, 125, 206, 0) 100%),
+    linear-gradient(270deg, rgba(66, 66, 96, 0.8), rgba(0,0,255,0) 70.71%);
+    min-height: 100vh;
+
+}
+
+h1 {
+    text-shadow: 2px 2px 2px white;
+}
+#store-img{
+    width: 200px;
+    height: 200px;
+}
+
+.text-bg-container1{
+    background-color: rgba(154, 165, 220, 0.8);
+    color: white;
+    text-shadow: 2px 2px 2px black;
+    box-shadow: 10px 5px 5px rgba(66, 66, 96, 0.8);
+}
+
+.text-bg-container1:hover {
+    background-color: rgba(190, 165, 220, 1);
+    color: white;
+    text-shadow: 2px 2px 2px black;
+    box-shadow: 10px 5px 5px rgba(66, 66, 96, 0.8);
+}
+.text-bg-container2{
+    background-color: rgb(159, 160, 164);
+    color: white;
+    text-shadow: 2px 2px 2px black;
+    box-shadow: 10px 5px 5px rgba(73, 142, 216, 0.8);
+}
+
+.text-bg-container2:hover {
+    background-color: rgb(185, 160, 164);
+    color: white;
+    text-shadow: 2px 2px 2px black;
+    box-shadow: 10px 5px 5px rgba(73, 142, 216, 0.8);
+}
+
+.text-bg-container3{
+    background-color: rgba(73, 142, 216, 0.8);
+    color: white;
+    text-shadow: 2px 2px 2px black;
+    box-shadow: 10px 5px 5px rgb(159, 160, 164);
+}
+
+.text-bg-container3:hover {
+    background-color: rgba(100, 160, 216, 0.8);
+    color: white;
+    text-shadow: 2px 2px 2px black;
+    box-shadow: 10px 5px 5px rgb(159, 160, 164);
+}
+
+.text-bg-container4{
+    background-color: rgba(66, 66, 96, 0.8);
+    color: white;
+    text-shadow: 2px 2px 2px black;
+    box-shadow: 10px 5px 5px rgba(154, 165, 220, 0.8);
+}
+
+.text-bg-container4:hover{
+    background-color: rgba(50, 20, 96, 0.8);
+    color: white;
+    text-shadow: 2px 2px 2px black;
+    box-shadow: 10px 5px 5px rgba(154, 165, 220, 0.8);
+}
+
+.mt-4 > a {
+    text-decoration: none;
+    color: white;
+    
+}
+
+
+
+.nav-item{
+    padding: 10px;
+    margin: 0;
+    text-align: center;
+}
+
+.nav-item > p {
+    margin: 0;
+    padding: 8px;
+}
+

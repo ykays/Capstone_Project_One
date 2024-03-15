@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Capstone 1</title>
+</head>
+<body>
+    <h1>Autocomplete</h1>
+<ol>
+    {% for item in resp2 %}
+    <li>{{item}}</li>
+    {% endfor %}
+</ol>
+
+<h2>Full search</h2>
+
+<ol>
+  {% for item in resp1.hints %}
+    <li>name: {{item.food.label}}; calories: {{item.food.nutrients.ENERC_KCAL}}; category: {{item.food.category}}</li>
+    <img src={{item.food.image}}>
+        {% endfor %}
+     </ol>
+   
+
+</body>
+</html>
