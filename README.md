@@ -1,8 +1,8 @@
 **Welcome to Easy Grocery App!** (URL:)
+_Do you usually buy the same things at your grocery store and even though you always forget something?_
 
 <img width="1368" alt="Home Page" src="https://github.com/ykays/Capstone_Project_One/assets/63420594/8f72d787-3472-4320-a2d2-a14fd705e423">
 
-_Do you usually buy the same things at your grocery store and even though you always forget something?_
 
 This application allows you to create your own grocery shopping template which will be used to pre-populate a grocery list for a specific date.
 <img width="1395" alt="Home Page Sections" src="https://github.com/ykays/Capstone_Project_One/assets/63420594/32040e3a-7071-4aa6-a89b-1c72ce95726e">
