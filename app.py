@@ -79,10 +79,11 @@ def login():
 
    return render_template('login.html', form=form)
 
-@app.route('/logout', methods=['GET', 'POST'])
+@app.route('/logout')
 def logout_user():
     """The user will be logged out and the session will be cleared"""
     session.pop('username')
+    session.clear()
     flash("You've logged out successfully", "success")
     return redirect('/')
 
@@ -338,9 +339,10 @@ def update_grocery_list():
    user_id = functions.get_user_id(session['username'])
    date = request.json['date']
    price = request.json['price']
+   
    grocery_list = GroceryList.query.filter(GroceryList.user_id == user_id, GroceryList.date==date).first()
-   grocery_list.total_price = price
-   grocery_list.completed=True
+   grocery_list.total_price = 0 if price == '' else price
+   
    db.session.commit()
    return jsonify(message="The price has been updated") 
 
@@ -348,25 +350,28 @@ def update_grocery_list():
 @app.route('/analytics')
 def history_analytics_page():
    """To display charts and history of grocery spending"""
+   if not session.get('username'):
+    return jsonify(message="You need to be logged in to view this page")
+   
    user_id = functions.get_user_id(session['username'])
    date = datetime.today() - timedelta(days=31);
    fig = analytics.total_price_to_date(date, user_id)
    render_template_string(fig.to_html())
-   x = fig.to_html()
+   f1 = fig.to_html()
 
    fig2 = analytics.total_number_items_bought(user_id, date)
    render_template_string(fig2.to_html())
-   x2 = fig2.to_html() 
+   f2 = fig2.to_html() 
 
    fig3 = analytics.total_number_items_bought_vs_price_for_date(user_id, date)
    render_template_string(fig3.to_html())
-   x3 = fig3.to_html()
+   f3 = fig3.to_html()
 
    fig4 = analytics.total_products_per_category(user_id, date)
    render_template_string(fig4.to_html())
-   x4 = fig4.to_html()
+   f4 = fig4.to_html()
 
    fig5 = analytics.most_expensive_groceries(user_id)
    render_template_string(fig5.to_html())
-   x5 = fig5.to_html()
-   return render_template('analytics.html',  x=x, x2=x2, x3=x3, x4=x4, x5=x5 )
+   f5 = fig5.to_html()
+   return render_template('analytics.html',  f1=f1, f2=f2, f3=f3, f4=f4, f5=f5 )

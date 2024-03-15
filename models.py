@@ -141,16 +141,6 @@ class GroceryList(db.Model):
  
     grocery_list_products = db.relationship('GroceryListProducts', cascade="all, delete-orphan")
     
-    def serialize(self):
-            return {
-        'id': self.id,
-        'user_id': self.user_id,
-        'template_id': self.template_id,
-        'completed': self.completed,
-        'total_price': self.total_price,
-        'start_time' : self.start_time,
-        'end_time' : self.end_time
-    }
 class GroceryListProducts(db.Model):
     """Grocery List Products Relationship Model"""
 

@@ -147,6 +147,20 @@ class TemplatesViewTestCase(TestCase):
             self.assertEqual(resp.status_code, 200)
             self.assertIn('already exists', response_data)
 
+    @pytest.mark.usefixtures("app_ctx")
+    def test_executing_external_api(self):
+        """Testing executing external API"""
+        with app.test_client() as client:
+            with client.session_transaction() as session:
+                session['username'] = self.username
+
+            ingr = 'corn'
+            resp = client.get(f'/search/external/{ingr}')
+            
+            response_data = resp.get_data(as_text=True)
+
+            self.assertEqual(resp.status_code, 200)
+            self.assertIn('Sweet Corn', response_data)
     
 
   

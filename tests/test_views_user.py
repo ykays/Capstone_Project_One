@@ -58,6 +58,17 @@ class UserViewsTestCase(TestCase):
             self.assertIn('Welcome, test_user', html)
     
     @pytest.mark.usefixtures("app_ctx")
+    def test_register_user_page(self):
+        """Testing registering form page"""
+        
+        with app.test_client() as client:
+            resp = client.get('/register')
+            html = resp.get_data(as_text=True)
+
+            self.assertEqual(resp.status_code, 200)
+            self.assertIn('Register to Easy Grocery App!', html)
+
+    @pytest.mark.usefixtures("app_ctx")
     def test_register_user(self):
         """Testing registering form"""
         
@@ -104,3 +115,84 @@ class UserViewsTestCase(TestCase):
             self.assertEqual(resp.status_code, 200)
             self.assertIn('This username/email already exists', html)
             self.assertNotEqual(session.get("username"), "test_username")
+    
+    @pytest.mark.usefixtures("app_ctx")
+    def test_login_page(self):
+        """Testing login form page"""
+        
+        with app.test_client() as client:
+            resp = client.get('/login')
+            html = resp.get_data(as_text=True)
+
+            self.assertEqual(resp.status_code, 200)
+            self.assertIn('Log In to Easy Grocery App!', html)
+
+    @pytest.mark.usefixtures("app_ctx")
+    def test_login_user(self):
+        """Testing login form"""
+        u1 = User.signup("test_user", "test_password", "test@gmail.com")
+        db.session.add(u1)
+        db.session.commit()
+        self.u1_username = u1.username
+
+        with app.test_client() as client:
+            data = {"username": "test_user", "password": "test_password"}
+            resp = client.post('/login', data=data, follow_redirects=True)
+            html = resp.get_data(as_text=True)
+
+            self.assertEqual(resp.status_code, 200)
+            self.assertIn('<h1> Welcome, test_user! </h1>', html)
+            self.assertEqual(session['username'], "test_user")
+
+    @pytest.mark.usefixtures("app_ctx")
+    def test_login_user_invalid_username(self):
+        """Testing login form with invalid username"""
+        u1 = User.signup("test_user", "test_password", "test@gmail.com")
+        db.session.add(u1)
+        db.session.commit()
+        self.u1_username = u1.username
+
+        with app.test_client() as client:
+            data = {"username": "testuser", "password": "test_password"}
+            resp = client.post('/login', data=data, follow_redirects=True)
+            html = resp.get_data(as_text=True)
+
+            self.assertEqual(resp.status_code, 200)
+            self.assertIn('Invalid Username/Password', html)
+            self.assertIsNone(session.get('username'))
+    
+    @pytest.mark.usefixtures("app_ctx")
+    def test_login_user_invalid_password(self):
+        """Testing login form with invalid password"""
+        u1 = User.signup("test_user", "test_password", "test@gmail.com")
+        db.session.add(u1)
+        db.session.commit()
+        self.u1_username = u1.username
+
+        with app.test_client() as client:
+            data = {"username": "test_user", "password": "testpassword"}
+            resp = client.post('/login', data=data, follow_redirects=True)
+            html = resp.get_data(as_text=True)
+
+            self.assertEqual(resp.status_code, 200)
+            self.assertIn('Invalid Username/Password', html)
+            self.assertIsNone(session.get('username'))
+    
+    @pytest.mark.usefixtures("app_ctx")
+    def test_logout_user(self):
+        """Testing logout"""
+        u1 = User.signup("test_user", "test_password", "test@gmail.com")
+        db.session.add(u1)
+        db.session.commit()
+        self.username = u1.username
+
+        with app.test_client() as client:
+            with client.session_transaction() as session:
+                session['username'] = self.username
+           
+            resp = client.get('/logout', follow_redirects=True)
+            html = resp.get_data(as_text=True)
+
+            self.assertEqual(resp.status_code, 200)
+            self.assertIn("logged out successfully", html)
+    

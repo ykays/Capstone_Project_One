@@ -67,7 +67,7 @@ def insert_grocery_list_products(products):
     return all_glp
 
 def get_all_products_list(list_id, date):
-    grocery_list_products_db = db.session.query(GroceryListProducts.id, GroceryListProducts.product_id, GroceryListProducts.grocery_list_id, GroceryListProducts.quantity, GroceryListProducts.bought, GroceryList.date, GroceryList.total_price, Product.product_name, Product.category_id, ProductCategory.category_name).join(GroceryList).join(Product).join(ProductCategory).filter(GroceryListProducts.grocery_list_id == list_id, GroceryList.date == date).order_by(Product.category_id).all();
+    grocery_list_products_db = db.session.query(GroceryListProducts.id, GroceryListProducts.product_id, GroceryListProducts.grocery_list_id, GroceryListProducts.quantity, GroceryListProducts.bought, GroceryList.date, GroceryList.total_price, Product.product_name, Product.category_id, ProductCategory.category_name).join(GroceryList).join(Product).join(ProductCategory).filter(GroceryListProducts.grocery_list_id == list_id, GroceryList.date == date).order_by(Product.category_id, Product.product_name).all();
     grocery_list_products = change_format(grocery_list_products_db)
     return grocery_list_products
 
