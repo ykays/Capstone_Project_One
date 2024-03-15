@@ -5,13 +5,15 @@
 _Do you usually buy the same things at your grocery store and even though you always forget something?_
 
 This application allows you to create your own grocery shopping template which will be used to pre-populate a grocery list for a specific date.
-
+<img width="1395" alt="Home Page Sections" src="https://github.com/ykays/Capstone_Project_One/assets/63420594/32040e3a-7071-4aa6-a89b-1c72ce95726e">
 After you register in the app, 
-you will able to search for any product in the internal Easy Grocery DB (with search enhanced with suggestions) as well as using external API (https://api.edamam.com). 
+you will able to search for any product in the internal Easy Grocery DB (with search enhanced with suggestions) 
+as well as using external API (https://api.edamam.com). 
 
 <img width="1403" alt="Registration" src="https://github.com/ykays/Capstone_Project_One/assets/63420594/057e3ffc-234f-4214-af41-1b89ac0cd221">
 
-<img width="1395" alt="Home Page Sections" src="https://github.com/ykays/Capstone_Project_One/assets/63420594/32040e3a-7071-4aa6-a89b-1c72ce95726e">
+<img width="1321" alt="Search" src="https://github.com/ykays/Capstone_Project_One/assets/63420594/cfa8a022-f21d-4c44-8f4f-328d0dc1b764">
+
 
 Each product has an assigned category (which becomes helpful to find a specific store aisle/section while shopping).
 
