@@ -51,3 +51,5 @@ The technology stack used to create this app:
 - Postgresql
 - WTForms
 - RESTful API
+- Plotly
+- Render
