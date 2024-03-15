@@ -1,4 +1,6 @@
 **Welcome to Easy Grocery App!** (URL:)
+
+
 _Do you usually buy the same things at your grocery store and even though you always forget something?_
 
 <img width="1368" alt="Home Page" src="https://github.com/ykays/Capstone_Project_One/assets/63420594/8f72d787-3472-4320-a2d2-a14fd705e423">
