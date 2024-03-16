@@ -1,4 +1,4 @@
-**Welcome to Easy Grocery App!** (URL:)
+**Welcome to Easy Grocery App!** (URL: https://easy-grocery.onrender.com/)
 
 
 _Do you usually buy the same things at your grocery store and even though you always forget something?_
