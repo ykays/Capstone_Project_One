@@ -114,18 +114,17 @@ h2{
     text-align: center;
 }
 
-#search_product, #quantity_reminder {
-    width: 400px;
-    
-}
 
 #suggestions, #suggestions-ext{
-    padding-right: 40px;
+    padding: 0;
     text-align: center;
-    
     outline-color: rgb(183, 179, 179);
 }
 
+#suggestions-ext{
+    background-color: white;
+
+}
 #suggestions > li:hover, #suggestions-ext > li:hover {
     background-color: grey;
     color: white;
@@ -164,6 +163,6 @@ h2{
   }
 
   iframe {
-    height: 500px; 
-    width: 100%;
+    height: 400px; 
+    width: 100vw;
   }

@@ -19,15 +19,12 @@ app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://bqzupvye:3o5RMKVSuMpw09pkfhDKmH_ARQ8qMb5z@bubble.db.elephantsql.com/bqzupvye'
 app.config['SECRET_KEY'] = os.environ['SECRET_KEY']
 app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = False 
-# app.config['SQLALCHEMY_ECHO'] = True
-#debug = DebugToolbarExtension(app)
 
 BASE_URL = "https://api.edamam.com"
 app_id = os.environ['APPLICATION_ID']
 app_key = os.environ['APPLICATION_KEY']
 
 connect_db(app)
-#app.app_context().__enter__()
 
 ##### REGISTER & LOGIN USER ROUTES #####
 

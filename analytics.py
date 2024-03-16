@@ -18,7 +18,7 @@ def total_price_to_date(date, user_id):
    dates = [item['date'] for item in data] 
    prices =  [item['total_price'] for item in data] 
     
-   fig = px.line(x=setting_date(dates), y=prices,markers=True, width=1200, height=400, title="Total price per date",
+   fig = px.line(x=setting_date(dates), y=prices,markers=True,  title="Total price per date (past month)",
                  labels={
                      "x": "Date",
                      "y": "Total price",
@@ -26,6 +26,8 @@ def total_price_to_date(date, user_id):
                  },)
 
    fig.update_layout(
+    
+      autosize=True, width=1200, height=400,
     margin=dict(l=20, r=20, t=40, b=20),
     paper_bgcolor="LightSteelBlue")
    
@@ -42,7 +44,7 @@ def total_number_items_bought(user_id, date):
    count =  [item['count'] for item in data_dict]
 
    fig = px.bar(x=setting_date(dates), 
-                y=count, width=1200, height=400,text_auto=True,title="Numbers of items bought per date",
+                y=count, width=1200, height=400,text_auto=True,title="Numbers of items bought per date (past month)",
                  labels={
                      "x": "Date",
                      "y": "Number of products",
@@ -67,7 +69,7 @@ def total_number_items_bought_vs_price_for_date(user_id, date):
    count =  [item['count'] for item in data_dict] 
    prices = [item['total_price'] for item in data_dict] 
 
-   fig = px.line(x=setting_date(dates), y=prices, markers=True, width=1200, height=400, title="Total price per date",
+   fig = px.line(x=setting_date(dates), y=prices, markers=True, width=1200, height=400, title="Total price vs number of items bought per date (past month)",
                  labels={
                      "x": "Date",
                      "y": "Total price",
@@ -100,7 +102,7 @@ def total_products_per_category(user_id,date):
    fig = px.bar(x=setting_date(dates), 
                 y=count, 
                 color=categories, 
-                width=1200, height=400,title="Numbers of items bought of each category per date",
+                width=1200, height=400,title="Numbers of items bought of each category per date (past month)",
                  labels={
                      "x": "Date",
                      "y": "Number of products",
@@ -124,7 +126,7 @@ def most_expensive_groceries(user_id):
    count =  [item['count'] for item in data_dict] 
    prices = [item['total_price'] for item in data_dict] 
 
-   fig = px.line(x=setting_date(dates), y=prices, markers=True, width=1200, height=400, title="Total price per date",
+   fig = px.line(x=setting_date(dates), y=prices, markers=True, width=1200, height=400, title="Total price vs number of items per date",
                  labels={
                      "x": "Date",
                      "y": "Total price",
