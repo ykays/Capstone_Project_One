@@ -1,4 +1,4 @@
-#Overview
+# Overview
 
 
 **Welcome to Easy Grocery App!** (URL: https://easy-grocery.onrender.com/)
@@ -42,9 +42,10 @@ and then view several analytics charts to analyze your spending, number of items
 <img width="835" alt="Analytics1" src="https://github.com/ykays/Capstone_Project_One/assets/63420594/b08843aa-33e9-4376-8561-146fef60ab91">
 <img width="728" alt="Analytics2" src="https://github.com/ykays/Capstone_Project_One/assets/63420594/b4a65b37-e88c-48a4-a56e-7cbebd125e04">
 
-#Installation
+
 
 The technology stack used to create this app:
+
 - JavaScript
 - HTML
 - CSS (and bootstrap)
@@ -56,3 +57,28 @@ The technology stack used to create this app:
 - RESTful API
 - Plotly
 - Render
+
+# Installation
+
+1. Clone locally the repository: git clone git@github.com:ykays/Capstone_Project_One.git
+2. Install requirements: pip install requirements.txt
+3. Create new DB locally: createdb grocery_db
+4. Replace the DB URI with grocery_db in .env: DATABASE = ‘postgresql://grocery_db'
+5. Run seed file to create and populate tables: python seed.py
+6. To start app: flask run
+7. You may use the user that was created by the seed file (username: test_user; password: test_user_password!9) or register with a new username.
+8. To run tests: python -m pytest tests/
+
+# Quick folder description:
+
+1. Project docs - contains DB schema, User’s flow diagram, as well as initial project idea and proposal.
+2. Generate - contains the CSV files that are loaded during seed process.
+3. Static - contains CSS, JS files and logo pics.
+4. Templates - contains all HTML files.
+5. Services - contains files with transformation/business logic/DB queries. 
+6. Blueprints - contains a file with routes/APIs for each module (as extensions to the main app.py file).
+7. Tests - all test files for models and view functions. 
+8. Other files:
+    - app.py - main file with routes 
+    - Models.py - all DB Models;
+    - forms.py - registration & login forms 
