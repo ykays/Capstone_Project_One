@@ -1,43 +1,37 @@
 {% extends 'base.html' %}
     {% block title %} Search {% endblock %}
     {% block content %}
-    <div class="container alert alert-warning" id="messages">
-
-    </div>
-    
-    <div class="container text-center" style="width: 60vw">
-        <div class="row">
-            <div class="col">
-                <h3>Find a Product, Assign a Category & Add to Easy Grocery Database</h3>
-
-                <form action="" method="">
-                    <div class="mb-3">
-                        <label class="form-label" for="search_product_ext"></label>
-                        <input class="form-control" type="text" id="search_product_ext" name="search_product_ext" placeholder="Search Product" required>
-                        <div class="d-grid gap-2">
-                            <button class="btn btn-primary" id="btn-add-product-ext">Search</button>
-                        </div>
-                    </div>
-                    
-
-                    <select class="form-select" id="ext_prod_cat">
-                        <option selected>Select Product Category</option>
-                    </select> 
-
-
+<div class="container alert alert-warning" id="messages"></div>
+<div class="container text-center" style="width: 60vw">
+    <div class="row">
+        <div class="col">
+            <h3>Find a Product, Assign a Category & Add to Easy Grocery Database</h3>
+            <form action="" method="">
+                <div class="mb-3">
+                    <label class="form-label" for="search_product_ext"></label>
+                    <input
+                        class="form-control"
+                        type="text"
+                        id="search_product_ext"
+                        name="search_product_ext"
+                        placeholder="Search Product"
+                        required
+                    >
                     <div class="d-grid gap-2">
-                        <button class="btn btn-success" id="btn-add-product-to-products">Add to Products</button>
+                        <button class="btn btn-primary" id="btn-add-product-ext">Search</button>
                     </div>
-                </form>
-                <ul id="suggestions-ext">
-                </ul>
-
-              
-            </div>
+                </div>
+                <select class="form-select" id="ext_prod_cat">
+                    <option selected>Select Product Category</option>
+                </select>
+                <div class="d-grid gap-2">
+                    <button class="btn btn-success" id="btn-add-product-to-products">Add to Products</button>
+                </div>
+            </form>
+            <ul id="suggestions-ext"></ul>
         </div>
     </div>
-  
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.2/axios.min.js" integrity="sha256-T/f7Sju1ZfNNfBh7skWn0idlCBcI3RwdLSS4/I7NQKQ=" crossorigin="anonymous"></script>
-    <script src="/static/external_search.js"></script>
-    {% endblock %}
+</div>
+{% include 'vendor.html' %}
+<script src="/static/external_search.js"></script>
+{% endblock %}

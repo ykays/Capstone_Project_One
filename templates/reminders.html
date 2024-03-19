@@ -30,7 +30,7 @@
             <form action="" method="">
                 <div class="mb-3">
                     <label class="col-form-label fw-bold" for="search_product">Product</label>
-                    <input class="form-control" type="text" id="search_product" name="search_product" placeholder="Add new product" required>
+                    <input class="form-control" type="text" id="search_product" name="search_product" minlength="1" placeholder="Add new product" required>
                 </div>
                 <div class="mb-3">
                     <label class="col-form-label fw-bold"  for="quantity_reminder">Quantity</label>
@@ -52,7 +52,7 @@
   </div>
 
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.2/axios.min.js" integrity="sha256-T/f7Sju1ZfNNfBh7skWn0idlCBcI3RwdLSS4/I7NQKQ=" crossorigin="anonymous"></script>
+    {% include 'vendor.html' %}
     <script type="module" src="/static/basic-modules/reminders.js"></script>
    
     {% endblock %}

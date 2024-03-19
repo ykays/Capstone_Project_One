@@ -85,18 +85,24 @@ async function newListProduct(e) {
   const product_id = searchProduct.dataset.productId;
   const quantity = quantityAdd.value;
   const date = formGroceryDate.value;
-  const resp = await axios.post("/api/list/products", {
-    product_id: product_id,
-    quantity: quantity,
-    date: date,
-  });
-  if (resp.status === 201) {
-    const msg = "A new product has been added";
+  if (product_id === undefined || product_id === "") {
+    const msg = "Please select product";
     showErrors(msg);
+  } else {
+    const resp = await axios.post("/api/list/products", {
+      product_id: product_id,
+      quantity: quantity,
+      date: date,
+    });
+    if (resp.status === 201) {
+      const msg = "A new product has been added";
+      showErrors(msg);
+    }
+    searchProduct.value = "";
+    quantityAdd.value = "";
+    searchProduct.dataset.productId = "";
+    getList();
   }
-  searchProduct.value = "";
-  quantityAdd.value = "";
-  getList();
 }
 
 //Handling delete option of single item

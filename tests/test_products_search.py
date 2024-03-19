@@ -1,17 +1,19 @@
 import pytest
 import os
 from unittest import TestCase
-from app import app
 from flask import session, jsonify
 from models import db, connect_db, User, ListTemplate, TemplateProduct, ProductCategory, Product
 import requests
+
+os.environ['DATABASE'] = "postgresql:///shopping-test"
+from app import app
 
 @pytest.fixture
 def app_ctx():
     with app.app_context():
         yield
 
-os.environ['DATABASE_URL'] = "postgresql:///shopping-test"        
+      
 app.config['WTF_CSRF_ENABLED'] = False
 
 with app.app_context():

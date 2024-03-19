@@ -42,6 +42,11 @@ function createSelectOption(result) {
 //Triggering an API to get products from the external source
 async function searchExternalAPI() {
   const name = searchExt.value;
+  if (name === undefined || name === "") {
+    const msg = "Please select product";
+    showErrors(msg);
+    return;
+  }
   resp = await axios.get(`/search/external/${name}`);
 
   handlingExternalSearch(resp.data.hints);
@@ -76,8 +81,19 @@ function useSuggestion(e) {
 //Adding product to DB
 async function addToProductList(e) {
   const product = searchExt.value;
+  if (product === undefined || product === "") {
+    const msg = "Please select product";
+    showErrors(msg);
+    return;
+  }
   const indx = productCategories.value.indexOf(":");
   const category_id = productCategories.value.slice(0, indx);
+  if (category_id === "Select Product Categor") {
+    const msg = "Please select category";
+    showErrors(msg);
+    return;
+  }
+
   resp = await axios.post("/api/products", {
     product: product,
     category_id: category_id,

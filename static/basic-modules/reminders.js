@@ -41,18 +41,25 @@ function timeOut() {
 async function newReminder(e) {
   const product_id = searchProduct.dataset.productId;
   const quantity = quantityReminder.value;
-  const resp = await axios.post("/api/reminders/products", {
-    product_id: product_id,
-    quantity: quantity,
-  });
-  if (resp.status === 201) {
-    const msg = "Product has been added to your don't forget list";
-    showErrors(msg);
-  }
 
-  searchProduct.value = "";
-  quantityReminder.value = "";
-  loadMyReminders();
+  if (product_id === undefined || product_id === "") {
+    const msg = "Please select product";
+    showErrors(msg);
+  } else {
+    const resp = await axios.post("/api/reminders/products", {
+      product_id: product_id,
+      quantity: quantity,
+    });
+    if (resp.status === 201) {
+      const msg = "Product has been added to your don't forget list";
+      showErrors(msg);
+    }
+
+    searchProduct.value = "";
+    quantityReminder.value = "";
+    searchProduct.dataset.productId = "";
+    loadMyReminders();
+  }
 }
 
 // Getting user's reminders

@@ -63,6 +63,11 @@ async function getUsersTemplates() {
 // Create new template name
 async function createTemplate(e) {
   const name = document.getElementById("template_name").value;
+  if (name === "") {
+    const msg = "Please provide template name";
+    showErrors(msg);
+    return;
+  }
   addSpinner();
   const resp = await axios.post("/api/templates", {
     name: name,
@@ -153,9 +158,15 @@ async function deleteTemplateProduct(e) {
 //once the user hits Add button the selected suggestion will be added to the user's template
 async function addTemplateProduct(e) {
   const itemId = searchProduct.dataset.productId;
+  if (itemId === undefined || itemId === "") {
+    const msg = "Please select product";
+    showErrors(msg);
+    return;
+  }
   const resp = await axios.post(`/api/templates/product/${itemId}`);
 
   searchProduct.value = "";
+  searchProduct.dataset.productId = "";
   loadMyTemplate(resp.data["template"]);
 
   //if the product is already in user's template don't add and send a message

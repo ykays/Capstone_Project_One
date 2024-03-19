@@ -1,79 +1,101 @@
 {% extends 'base.html' %}
     {% block title %} Grocery Lists {% endblock %}
     {% block content %}
-
-    <div class="container alert alert-warning" id="messages">
-
-    </div>
-
-    <div id="spinner">
-    </div>
-
-        <h2>View/Add/Update Grocery List</h2>  
-        <div class="container text-center">
-            <form action="" method="" class="date-form">
-                <label class='col-form-label fw-bold' for="grocery-date">Enter Date To Add/View List</label>
-                <input class="form-control-sm" type="date" id='grocery-date' name='grocery-date' required>
-                <button class="btn btn-primary" id="date-submit" >Submit</button>
-            </form>
-
-
-        </div>
-        <div class="container d-grid gap-2" data-bs-toggle="modal" data-bs-target="#exampleModal">
-            <button class="btn btn-primary"   id="btn-add-to-list">Add New Product</button>
-        </div>
-        <div class="container d-grid gap-2">
-            <button class="btn btn-success"   id="btn-add-reminders">Add Items from Your Don't forget List</button>
-        </div>
-            
-            <div class="container">           
-                <ul class="list-group" id="list-products">
-                </ul> 
+<div class="container alert alert-warning" id="messages"></div>
+<div id="spinner"></div>
+<h2>View/Add/Update Grocery List</h2>
+<div class="container text-center">
+    <form action="" method="" class="date-form">
+        <label class="col-form-label fw-bold" for="grocery-date">Enter Date To Add/View List</label>
+        <input
+            class="form-control-sm"
+            type="date"
+            id="grocery-date"
+            name="grocery-date"
+            required
+        >
+        <button class="btn btn-primary" id="date-submit">Submit</button>
+    </form>
+</div>
+<div class="container d-grid gap-2" data-bs-toggle="modal" data-bs-target="#exampleModal">
+    <button class="btn btn-primary" id="btn-add-to-list">Add New Product</button>
+</div>
+<div class="container d-grid gap-2">
+    <button class="btn btn-success" id="btn-add-reminders">Add Items from Your Don't forget List</button>
+</div>
+<div class="container">
+    <ul class="list-group" id="list-products"></ul>
+</div>
+<div class="container text-center" id="price-section">
+    <form action="" method="">
+        <label class="col-form-label fw-bold" for="price-input">Enter total price of your grocery</label>
+        <input
+            class="form-control-sm"
+            type="number"
+            min="0"
+            name="price-input"
+            id="price-input"
+            placeholder="Total Price"
+        >
+        <button type="button" class="btn btn-success" id="price-submit">Submit</button>
+    </form>
+</div>
+<div
+    class="modal fade"
+    id="exampleModal"
+    tabindex="-1"
+    aria-labelledby="exampleModalLabel"
+    aria-hidden="true"
+>
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Add item</h1>
+                <button
+                    type="button"
+                    class="btn-close"
+                    data-bs-dismiss="modal"
+                    aria-label="Close"
+                ></button>
             </div>
-
-            <div class="container text-center" id="price-section">
+            <div class="modal-body">
                 <form action="" method="">
-                    <label class="col-form-label fw-bold" for="price-input">Enter total price of your grocery</label>
-                    <input class="form-control-sm" type="number" name="price-input" id="price-input" placeholder="Total Price">
-                    <button type="button" class="btn btn-success" id="price-submit">Submit</button>
+                    <div class="mb-3">
+                        <label class="col-form-label fw-bold" for="search_product">Product</label>
+                        <input
+                            class="form-control"
+                            type="text"
+                            id="search_product"
+                            name="search_product"
+                            placeholder="Add new product"
+                            required
+                        >
+                    </div>
+                    <div class="mb-3">
+                        <label class="col-form-label fw-bold" for="quantity_add">Quantity</label>
+                        <input
+                            class="form-control"
+                            type="number"
+                            id="quantity_add"
+                            name="quantity_add"
+                            min="1"
+                            value="1"
+                            step="1"
+                            placeholder="Enter quantity"
+                            required
+                        >
+                    </div>
                 </form>
+                <ul id="suggestions"></ul>
             </div>
-
-            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                <div class="modal-dialog">
-                  <div class="modal-content">
-                    <div class="modal-header">
-                        
-                      <h1 class="modal-title fs-5" id="exampleModalLabel">Add item</h1>
-                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <form action="" method="">
-                            <div class="mb-3">
-                                <label class="col-form-label fw-bold" for="search_product">Product</label>
-                                <input class="form-control" type="text" id="search_product" name="search_product" placeholder="Add new product" required>
-                            </div>
-                            <div class="mb-3">
-                                <label class="col-form-label fw-bold"  for="quantity_add">Quantity</label>
-                                <input class="form-control" type="number" id="quantity_add" name="quantity_add" min="1" value='1' step="1" placeholder="Enter quantity" required>
-                            </div>
-                            
-                        </form>
-                        <ul id="suggestions">
-            
-                        </ul>
-                    </div>
-                    <div class="modal-footer">
-                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                      <button type="button" class="btn btn-primary" id="save-add">Save changes</button>
-                      <a href='/external_search' class="btn btn-primary">Advanced Search</a>
-                    </div>
-                  </div>
-                </div>
-              </div>        
-    
-
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.2/axios.min.js" integrity="sha256-T/f7Sju1ZfNNfBh7skWn0idlCBcI3RwdLSS4/I7NQKQ=" crossorigin="anonymous"></script>
-    <script type="module" src="/static/basic-modules/lists.js"></script>
-    {% endblock %}
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" id="save-add">Save changes</button>
+                <a href="/external_search" class="btn btn-primary">Advanced Search</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% include 'vendor.html' %}
+<script type="module" src="/static/basic-modules/lists.js"></script>
+{% endblock %}

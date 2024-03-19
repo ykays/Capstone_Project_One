@@ -1,47 +1,45 @@
 {% extends 'base.html' %}
     {% block title %} Easy Grocery {% endblock %}
     {% block content %}
-
-    
- 
-    <div class="col-md-8 mx-auto text-center" >
-        
-        {% if session["username"] %}
-            <h1> Welcome, {{session["username"]}}! </h1>
-
-              <div class="container mt-3">
-
-                <div class="row align-items-md-stretch">
-                  <div class="col-md-6">
-                        <div class="mt-4 p-5  text-bg-container1 rounded">
-                            <a href="/templates"><h2>Templates</h2></a>          
-                        </div>
-                    </div>
-                
-                    <div class="col-md-6">
-                        <div class="mt-4 p-5  text-bg-container2 rounded">
-                            <a href="/lists"><h2>Lists</h2></a> 
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="mt-4 p-5  text-bg-container3 rounded">
-                            <a href="/reminders"><h2>Don't forget</h2></a> 
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="mt-4 p-5  text-bg-container4 rounded">
-                            <a href="/analytics"><h2>Analytics</h2></a> 
-                        </div>
-                    </div>
-
+<div class="col-md-8 mx-auto text-center">
+    {% if session["username"] %}
+    <h1> Welcome, {{session["username"]}}!</h1>
+    <div class="container mt-3">
+        <div class="row align-items-md-stretch">
+            <div class="col-md-6">
+                <div class="mt-4 p-5  text-bg-container1 rounded">
+                    <a href="/templates">
+                        <h2>Templates</h2>
+                    </a>
                 </div>
-              </div>
-
-        {% else %}
-            <img src="/static/easy-grocery-store-drawing.png" id="store-img">
-            <h1>Welcome to Easy Grocery App!</h1>
-            <h3>Please register or log in!</h3>
-    
+            </div>
+            <div class="col-md-6">
+                <div class="mt-4 p-5  text-bg-container2 rounded">
+                    <a href="/lists">
+                        <h2>Lists</h2>
+                    </a>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="mt-4 p-5  text-bg-container3 rounded">
+                    <a href="/reminders">
+                        <h2>Don't forget</h2>
+                    </a>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="mt-4 p-5  text-bg-container4 rounded">
+                    <a href="/analytics">
+                        <h2>Analytics</h2>
+                    </a>
+                </div>
+            </div>
+        </div>
     </div>
-    {% endif %}
+    {% else %}
+    <img src="/static/easy-grocery-store-drawing.png" id="store-img">
+    <h1>Welcome to Easy Grocery App!</h1>
+    <h3>Please register or log in!</h3>
+</div>
+{% endif %}
     {% endblock%}

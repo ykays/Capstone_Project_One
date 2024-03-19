@@ -1,13 +1,11 @@
+import os
 from flask import Flask
 from unittest import TestCase
 from models import User
-# from wtforms_test import FormTestCase
-# from flask_wtf import FlaskForm
-from app import app
 from forms import RegisterForm, LoginForm
 
+os.environ['DATABASE'] = "postgresql:///shopping-test"
 from app import app
-from forms import RegisterForm, LoginForm
 
 app.config['WTF_CSRF_ENABLED']=False  
 

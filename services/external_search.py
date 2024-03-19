@@ -2,12 +2,14 @@ from models import db, connect_db, User, ListTemplate, ProductCategory, Product,
 from flask import jsonify
 import requests
 
+
 def get_product_categories():
     return [category.serialize() for category in ProductCategory.query.all()]
 
+
 def find_product(product_name, category_id):
-    find_product =  Product.query.filter(Product.product_name == product_name, Product.category_id==category_id).all()
-    return find_product
+    return Product.query.filter(Product.product_name == product_name, Product.category_id == category_id).all()
+
 
 def add_product(product_name, category_id):
     new_product = Product(product_name=product_name, category_id=category_id)

@@ -26,10 +26,8 @@ async function search(str) {
   addSpinner();
   const resp = await axios.get("/api/products");
 
-  const products = [];
-  for (let product of resp.data) {
-    products.push(product);
-  }
+  const products = resp.data.map((product) => product);
+
   hideSpinner();
   const results = products.filter((product) => {
     const productLower = product["product_name"].toLowerCase();
@@ -84,53 +82,83 @@ function useSuggestion(e) {
 
 function addProductsToPage(products) {
   products.forEach((product) => {
-    let li = document.createElement("li");
-    li.innerText = `${product["product_name"]}, Quantity: `;
-    li.classList.add("list-group-item");
-    li.classList.add("text-bg-secondary");
-    li.dataset.reminderId = product["id"];
-    li.dataset.bought = product["bought"];
+    const li = helperCreateLi(product);
 
-    let spanQty = document.createElement("input");
-    spanQty.type = "number";
-    spanQty.min = "1";
-    spanQty.value = product["quantity"];
-    spanQty.name = "quantity_reminder_edit";
-    spanQty.id = "quantity_reminder_edit";
+    const spanQty = helperCreateSpanQty(product);
     li.append(spanQty);
 
-    let span = document.createElement("span");
-    span.innerText = product["category_name"];
-    span.classList.add("badge");
-    span.classList.add("text-bg-light");
+    const span = helperCreateSpan(product);
     li.append(span);
 
-    let btnCheck = document.createElement("button");
-    btnCheck.classList.add("check-btn");
-    btnCheck.id = "btnCheckItem";
-    product["bought"] === true
-      ? (btnCheck.innerText = "✔")
-      : (btnCheck.innerText = "□");
+    const btnCheck = helperCreateButtonCheck(product);
     li.append(btnCheck);
 
-    let delButton = document.createElement("button");
-    delButton.innerText = "Delete";
-    delButton.id = "btnDelItem";
-    delButton.classList.add("btn");
-    delButton.classList.add("btn-danger");
-    delButton.classList.add("btn-sm");
+    const delButton = helperCreateButtonDelete(product);
     li.append(delButton);
 
-    let editButton = document.createElement("button");
-    editButton.innerText = "Save";
-    editButton.id = "btnSaveItem";
-    editButton.classList.add("btn");
-    editButton.classList.add("btn-success");
-    editButton.classList.add("btn-sm");
+    const editButton = helperCreateButtonEdit(product);
     li.append(editButton);
 
     listProducts.append(li);
   });
+}
+
+function helperCreateLi(product) {
+  const li = document.createElement("li");
+  li.innerText = `${product["product_name"]}, Quantity: `;
+  li.classList.add("list-group-item");
+  li.classList.add("text-bg-secondary");
+  li.dataset.reminderId = product["id"];
+  li.dataset.bought = product["bought"];
+  return li;
+}
+
+function helperCreateButtonCheck(product) {
+  const btnCheck = document.createElement("button");
+  btnCheck.classList.add("check-btn");
+  btnCheck.id = "btnCheckItem";
+  product["bought"] === true
+    ? (btnCheck.innerText = "✔")
+    : (btnCheck.innerText = "□");
+  return btnCheck;
+}
+
+function helperCreateButtonEdit(product) {
+  const editButton = document.createElement("button");
+  editButton.innerText = "Save";
+  editButton.id = "btnSaveItem";
+  editButton.classList.add("btn");
+  editButton.classList.add("btn-success");
+  editButton.classList.add("btn-sm");
+  return editButton;
+}
+
+function helperCreateButtonDelete(product) {
+  const delButton = document.createElement("button");
+  delButton.innerText = "Delete";
+  delButton.id = "btnDelItem";
+  delButton.classList.add("btn");
+  delButton.classList.add("btn-danger");
+  delButton.classList.add("btn-sm");
+  return delButton;
+}
+
+function helperCreateSpanQty(product) {
+  const spanQty = document.createElement("input");
+  spanQty.type = "number";
+  spanQty.min = "1";
+  spanQty.value = product["quantity"];
+  spanQty.name = "quantity_reminder_edit";
+  spanQty.id = "quantity_reminder_edit";
+  return spanQty;
+}
+
+function helperCreateSpan(product) {
+  const span = document.createElement("span");
+  span.innerText = product["category_name"];
+  span.classList.add("badge");
+  span.classList.add("text-bg-light");
+  return span;
 }
 
 function removeProductsFromPage() {
