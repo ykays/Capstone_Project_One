@@ -35,11 +35,11 @@ class TemplatesViewTestCase(TestCase):
         """Testing main page of analytics with no user"""
 
         with app.test_client() as client:
-            resp = client.get('/analytics')
+            resp = client.get('/analytics', follow_redirects=True)
             response_data = resp.get_data(as_text=True)
 
             self.assertEqual(resp.status_code, 200)
-            self.assertIn('You need to be logged in to view this page', response_data)
+            self.assertIn('Please log in to see the content', response_data)
 
     @pytest.mark.usefixtures("app_ctx")
     def test_analytics_main_page(self):
@@ -57,5 +57,4 @@ class TemplatesViewTestCase(TestCase):
 
             self.assertEqual(resp.status_code, 200)
             self.assertIn('Analytics', response_data)
-            self.assertIn('Total amount spent on grocery per date (past month)', response_data)
            

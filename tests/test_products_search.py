@@ -59,6 +59,8 @@ class TemplatesViewTestCase(TestCase):
         """Testing getting list of products"""
 
         with app.test_client() as client:
+            with client.session_transaction() as session:
+                session['username'] = self.username
             resp = client.get('/api/products')
             response_data = resp.get_data(as_text=True)
 
@@ -71,6 +73,9 @@ class TemplatesViewTestCase(TestCase):
         """Testing getting list of categories"""
 
         with app.test_client() as client:
+            with client.session_transaction() as session:
+                session['username'] = self.username
+
             resp = client.get('/api/categories')
             response_data = resp.get_data(as_text=True)
 
@@ -86,7 +91,7 @@ class TemplatesViewTestCase(TestCase):
             response_data = resp.get_data(as_text=True)
 
             self.assertEqual(resp.status_code, 200)
-            self.assertIn('You need to be logged in to use this search', response_data)
+            self.assertIn('Please log in to see the content', response_data)
     
     @pytest.mark.usefixtures("app_ctx")
     def test_external_search_user_logged_in(self):
@@ -108,12 +113,12 @@ class TemplatesViewTestCase(TestCase):
         
             resp = client.post('/api/products',  
                                headers={'Content-Type': 'application/json'},
-                               json = {"product": "Sweet Corn", "category_id": 2});
+                               json = {"product": "Sweet Corn", "category_id": 2}, follow_redirects=True);
             
             response_data = resp.get_data(as_text=True)
 
             self.assertEqual(resp.status_code, 200)
-            self.assertIn('access unauthorized', response_data)
+            self.assertIn('Please log in to see the content', response_data)
     
     @pytest.mark.usefixtures("app_ctx")
     def test_adding_new_product_user_logged_in(self):

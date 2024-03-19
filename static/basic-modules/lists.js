@@ -49,6 +49,11 @@ function timeOut() {
 }
 
 async function getList(e) {
+  if (formGroceryDate.value === "") {
+    const msg = "Please select date";
+    showErrors(msg);
+    return;
+  }
   removeProductsFromPage();
   btnAddToList.style.display = "none";
   btnAddReminders.style.display = "none";
@@ -221,7 +226,6 @@ btnPriceSubmit.addEventListener("click", function (e) {
 listProducts.addEventListener("click", function (e) {
   e.preventDefault();
   if (e.target.id === "btnCheckItem") {
-    console.log(e);
     markAsChecked(e);
   }
 });

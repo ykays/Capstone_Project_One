@@ -62,7 +62,7 @@ class TemplatesViewTestCase(TestCase):
             html = resp.get_data(as_text=True)
 
             self.assertEqual(resp.status_code, 200)
-            self.assertIn('You need to be logged in to view/add templates', html)
+            self.assertIn('Please log in to see the content', html)
     
     @pytest.mark.usefixtures("app_ctx")
     def test_templates_user_logged_in(self):

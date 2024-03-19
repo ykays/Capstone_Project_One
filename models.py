@@ -16,8 +16,8 @@ class User(db.Model):
     __tablename__ = 'users'
 
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    username = db.Column(db.Text, nullable=False, unique=True)
-    password = db.Column(db.Text, nullable=False)
+    username = db.Column(db.String(20), nullable=False, unique=True)
+    password = db.Column(db.String(100), nullable=False)
     email = db.Column(db.Text, nullable=False, unique=True)
 
     templates = db.relationship('ListTemplate', cascade="all, delete-orphan")
@@ -47,7 +47,7 @@ class ListTemplate(db.Model):
     __tablename__ = 'templates'
 
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    template_name = db.Column(db.Text, nullable=False)
+    template_name = db.Column(db.String(40), nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id', ondelete='CASCADE'), nullable=False)
 
     template_products = db.relationship('TemplateProduct', cascade="all, delete-orphan")
@@ -65,7 +65,7 @@ class ProductCategory(db.Model):
     __tablename__ = 'categories'
 
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    category_name = db.Column(db.Text, nullable=False, unique=True)
+    category_name = db.Column(db.String(80), nullable=False, unique=True)
     category_details = db.Column(db.Text, nullable=False)
 
 
@@ -84,7 +84,7 @@ class Product(db.Model):
     __tablename__ = 'products'
 
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    product_name = db.Column(db.Text, nullable=False)
+    product_name = db.Column(db.String(80), nullable=False)
     category_id = db.Column(db.Integer, db.ForeignKey('categories.id'))
 
     reminders = db.relationship('Reminder', cascade="all, delete-orphan")

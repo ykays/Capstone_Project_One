@@ -81,6 +81,7 @@ function addProductsToPage(products) {
 
     let spanQty = document.createElement("input");
     spanQty.type = "number";
+    spanQty.min = "1";
     spanQty.value = product["quantity"];
     spanQty.name = "quantity_reminder_edit";
     spanQty.id = "quantity_reminder_edit";

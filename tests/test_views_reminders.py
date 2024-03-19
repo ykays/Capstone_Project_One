@@ -61,7 +61,7 @@ class TemplatesViewTestCase(TestCase):
             response_data = resp.get_data(as_text=True)
 
             self.assertEqual(resp.status_code, 200)
-            self.assertIn("You need to be logged in to add/view", response_data)
+            self.assertIn("Please log in to see the content", response_data)
 
     @pytest.mark.usefixtures("app_ctx")
     def test_reminders_home_page_user_logged(self):
@@ -102,12 +102,12 @@ class TemplatesViewTestCase(TestCase):
 
             resp = client.post('/api/reminders/products',  
                                headers={'Content-Type': 'application/json'},
-                               json = {"product_id": self.product_id, "quantity": 2});
+                               json = {"product_id": self.product_id, "quantity": 2}, follow_redirects=True);
             
             response_data = resp.get_data(as_text=True)
 
             self.assertEqual(resp.status_code, 200)
-            self.assertIn("access unauthorized", response_data)
+            self.assertIn("Please log in to see the content", response_data)
 
     @pytest.mark.usefixtures("app_ctx")
     def test_get_reminders(self):

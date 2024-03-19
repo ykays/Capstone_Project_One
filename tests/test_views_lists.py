@@ -77,7 +77,7 @@ class TemplatesViewTestCase(TestCase):
             response_data = resp.get_data(as_text=True)
 
             self.assertEqual(resp.status_code, 200)
-            self.assertIn('You need to be logged in to view/add a new list', response_data)
+            self.assertIn('Please log in to see the content', response_data)
     
     @pytest.mark.usefixtures("app_ctx")
     def test_lists_main_page(self):
@@ -98,11 +98,11 @@ class TemplatesViewTestCase(TestCase):
 
         with app.test_client() as client:
             date = '2024-09-27'
-            resp = client.get(f'/api/list/products/{date}')
+            resp = client.get(f'/api/list/products/{date}', follow_redirects=True)
             response_data = resp.get_data(as_text=True)
 
             self.assertEqual(resp.status_code, 200)
-            self.assertIn('You need to be logged in to view list', response_data)
+            self.assertIn('Please log in to see the content', response_data)
 
     @pytest.mark.usefixtures("app_ctx")
     def test_creating_grocery_list(self):
@@ -208,12 +208,12 @@ class TemplatesViewTestCase(TestCase):
             resp = client.post('/api/list/products',  
                                headers={'Content-Type': 'application/json'},
                                json = {"date": self.grocery_date, "product_id": self.product_id,
-                                        "quantity": 5});
+                                        "quantity": 5}, follow_redirects=True);
             
             response_data = resp.get_data(as_text=True)
 
             self.assertEqual(resp.status_code, 200)
-            self.assertIn('You need to be logged in to add a new product', response_data)
+            self.assertIn('Please log in to see the content', response_data)
 
  
     @pytest.mark.usefixtures("app_ctx")
