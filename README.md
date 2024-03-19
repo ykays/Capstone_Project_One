@@ -1,4 +1,4 @@
-OVERVIEW
+#Overview
 
 
 **Welcome to Easy Grocery App!** (URL: https://easy-grocery.onrender.com/)
@@ -42,8 +42,8 @@ and then view several analytics charts to analyze your spending, number of items
 <img width="835" alt="Analytics1" src="https://github.com/ykays/Capstone_Project_One/assets/63420594/b08843aa-33e9-4376-8561-146fef60ab91">
 <img width="728" alt="Analytics2" src="https://github.com/ykays/Capstone_Project_One/assets/63420594/b4a65b37-e88c-48a4-a56e-7cbebd125e04">
 
-Enjoy!
-----------
+#Installation
+
 The technology stack used to create this app:
 - JavaScript
 - HTML
