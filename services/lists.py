@@ -1,4 +1,5 @@
 from models import db, connect_db, User, ListTemplate, ProductCategory, Product, TemplateProduct, Reminder, GroceryList, GroceryListProducts
+from flask import jsonify
 import requests
 
 def get_user_id(username):
@@ -111,6 +112,52 @@ def delete_reminders(list_reminders):
         db.session.delete(reminder)
         db.session.commit()
     return True
+
+def get_user_list_products(username, date):
+    check_list_exists = check_grocery_list_exist(username, date)
+    if check_list_exists:
+      list_id = get_user_grocery_list_id(username, date)
+      list_products = get_all_products_list(list_id, date)
+      return jsonify(list=list_products)
+   
+    check_template_exists = get_user_template_id(username)
+    if not check_template_exists:
+      return jsonify(message='Template needed')
+
+    new_list = add_new_grocery_list(username, date)
+    return (jsonify(list=new_list), 201)
+
+def add_new_product(username, date, product_id, quantity):
+    list_id = get_user_grocery_list_id(username, date)
+    new_quantity = quantity if quantity != '' else 1
+    new_glp = GroceryListProducts(grocery_list_id=list_id, product_id= product_id, quantity=new_quantity)
+    db.session.add(new_glp)
+    db.session.commit()
+    return jsonify(product=new_glp.serialize())
+
+def delete_list_product(id):
+    list_product = GroceryListProducts.query.get_or_404(id)
+    db.session.delete(list_product)
+    db.session.commit()
+
+def update_product_quantity(id, quantity, bought):
+    list_product = GroceryListProducts.query.get_or_404(id)
+    list_product.quantity = quantity if quantity != None else list_product.quantity
+    list_product.bought = bought if bought != None else list_product.bought
+    db.session.commit()
+    return jsonify(list_product=list_product.serialize())
+
+def update_price_grocery_list(username, date, price):
+    user_id = get_user_id(username)
+    grocery_list = GroceryList.query.filter(GroceryList.user_id == user_id, GroceryList.date==date).first()
+    grocery_list.total_price = 0 if price == '' else price
+   
+    db.session.commit()
+    return jsonify(message="The price has been updated") 
+
+
+
+    
 
 
 

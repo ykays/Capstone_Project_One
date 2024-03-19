@@ -5,11 +5,10 @@ import os
 from models import db, connect_db, User, ListTemplate, ProductCategory, Product, TemplateProduct, Reminder, GroceryList, GroceryListProducts
 from forms import RegisterForm, LoginForm
 from sqlalchemy.exc import IntegrityError
-import functions
-import analytics_functions
 import plotly.express as px
 from datetime import datetime, date, timedelta
 from functools import wraps
+import services
 
 analytics_bp = Blueprint("analytics", __name__)
 
@@ -28,25 +27,25 @@ def logged_in(func):
 def history_analytics_page():
    """To display charts and history of grocery spending"""
    
-   user_id = functions.get_user_id(session['username'])
+   user_id = services.analytics.get_user_id(session['username'])
    date = datetime.today() - timedelta(days=31);
-   fig = analytics_functions.total_price_to_date(date, user_id)
+   fig = services.analytics.total_price_to_date(date, user_id)
    render_template_string(fig.to_html())
    f1 = fig.to_html()
 
-   fig2 = analytics_functions.total_number_items_bought(user_id, date)
+   fig2 = services.analytics.total_number_items_bought(user_id, date)
    render_template_string(fig2.to_html())
    f2 = fig2.to_html() 
 
-   fig3 = analytics_functions.total_number_items_bought_vs_price_for_date(user_id, date)
+   fig3 = services.analytics.total_number_items_bought_vs_price_for_date(user_id, date)
    render_template_string(fig3.to_html())
    f3 = fig3.to_html()
 
-   fig4 = analytics_functions.total_products_per_category(user_id, date)
+   fig4 = services.analytics.total_products_per_category(user_id, date)
    render_template_string(fig4.to_html())
    f4 = fig4.to_html()
 
-   fig5 = analytics_functions.most_expensive_groceries(user_id)
+   fig5 = services.analytics.most_expensive_groceries(user_id)
    render_template_string(fig5.to_html())
    f5 = fig5.to_html()
    return render_template('analytics.html',  f1=f1, f2=f2, f3=f3, f4=f4, f5=f5 )

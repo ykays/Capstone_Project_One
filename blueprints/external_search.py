@@ -5,11 +5,10 @@ import os
 from models import db, connect_db, User, ListTemplate, ProductCategory, Product, TemplateProduct, Reminder, GroceryList, GroceryListProducts
 from forms import RegisterForm, LoginForm
 from sqlalchemy.exc import IntegrityError
-import functions
-import analytics_functions
 import plotly.express as px
 from datetime import datetime, date, timedelta
 from functools import wraps
+import services
 
 
 external_search_bp = Blueprint("external_search", __name__)
@@ -47,7 +46,7 @@ def search_via_external_api(name):
 @logged_in
 def get_all_product_categories():
    """To get a list of all available product categories"""
-   categories = [category.serialize() for category in ProductCategory.query.all()]
+   categories = services.external_search.get_product_categories()
    return jsonify(categories)
 
 @external_search_bp.route('/api/products', methods=['POST'])
@@ -56,11 +55,10 @@ def adding_new_product():
    """To add a new product"""
    product_name = request.json['product']
    category_id=request.json['category_id']
-   find_product =  Product.query.filter(Product.product_name == product_name, Product.category_id==category_id).all()
+   find_product = services.external_search.find_product(product_name, category_id)
+
    if len(find_product) != 0:
       return (jsonify(message='already exists'))
 
-   new_product = Product(product_name=product_name, category_id=category_id)
-   db.session.add(new_product)
-   db.session.commit()
-   return (jsonify(product=new_product.serialize()), 201)
+   new_product = services.external_search.add_product(product_name, category_id)
+   return (new_product, 201)

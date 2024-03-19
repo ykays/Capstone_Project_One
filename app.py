@@ -5,26 +5,20 @@ import os
 from models import db, connect_db, User, ListTemplate, ProductCategory, Product, TemplateProduct, Reminder, GroceryList, GroceryListProducts
 from forms import RegisterForm, LoginForm
 from sqlalchemy.exc import IntegrityError
-import functions
-import analytics_functions
 import plotly.express as px
 from datetime import datetime, date, timedelta
 from functools import wraps
-from templates import templates_bp
-from lists import lists_bp
-from reminders import reminders_bp
-from analytics import analytics_bp
-from external_search import external_search_bp
+import blueprints
 
 
 dotenv.load_dotenv()
 
 app = Flask(__name__)
-app.register_blueprint(templates_bp)
-app.register_blueprint(lists_bp)
-app.register_blueprint(reminders_bp)
-app.register_blueprint(analytics_bp)
-app.register_blueprint(external_search_bp)
+app.register_blueprint(blueprints.templates_bp)
+app.register_blueprint(blueprints.lists_bp)
+app.register_blueprint(blueprints.reminders_bp)
+app.register_blueprint(blueprints.analytics_bp)
+app.register_blueprint(blueprints.external_search_bp)
 
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ['DATABASE']
 app.config['SECRET_KEY'] = os.environ['SECRET_KEY']

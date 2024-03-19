@@ -3,6 +3,10 @@ from models import db, connect_db, User, ListTemplate, ProductCategory, Product,
 import plotly.express as px
 import pandas as pd
 
+def get_user_id(username):
+    user = User.query.filter(User.username == username).first()
+    return user.id
+
 def setting_date(dates):
    df = pd.DataFrame()
    df['date'] = dates
